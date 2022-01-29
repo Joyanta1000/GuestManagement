@@ -11,6 +11,12 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
+
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/guest_management', function () {
+    return view('GuestManagement.index');
 });
