@@ -47,9 +47,6 @@
 
             </span>
             <br>
-            <label id="max">
-                
-            </label>
 
             <span id="a_g_message" style="padding-left: 20px;">
 
@@ -58,12 +55,22 @@
             <span id="c_g_message" style="padding-left: 20px;">
 
             </span>
+
+            <span id="max" style="padding-left: 20px;">
+
+            </span>
+
+            <label id="age_of_children" style="padding-left: 20px;">
+
+            </label>
         </div>
     </div>
 </body>
 
 <script>
     $(document).ready(function() {
+        var a = [];
+
         $('#a_guest').change(function() {
             var a_guest = $('#a_guest').val();
             $('#max').html('');
@@ -72,25 +79,45 @@
             $('#a_g_message').append('<label for="">Adult Guest = ' + a_guest + '</label>');
         });
         $('#c_guest').change(function() {
+
+            var c_guest = $('#c_guest').val();
+            a = [];
+            for (var i = 1; i <= c_guest; i++) {
+                a.push(0);
+            }
+            this.a = a;
+
+            age(a);
+
             $('#max').html('');
             $('#max').append('Maximum guest 5');
-            var c_guest = $('#c_guest').val();
+
             $('#c_g_message').html('');
             $('#c_g_message').append('<label for="">Child Guest = ' + c_guest + '</label>');
             $('#a_children').html('');
             if (c_guest != 0) {
                 $('#a_children').append(
                     '<div style: "position:absolute; right: 20px;"><label for="">Age of Children</label>'
-                    );
+                );
                 for (var i = 1; i <= c_guest; i++) {
                     $('#a_children').append('<label>Child ' + i +
-                        '</label><select name="" id="c_guest' +
-                        i +
-                        '"><option value="0" selected>Select Age</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select><br></div>'
+                        '</label><select name="" class="ag_guest"><option value="0" selected>Select Age</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select><br></div>'
                     );
                 }
             }
         });
+
+        $('.ag_guest').change(function() {
+            alert('hey');
+        });
+
+
+        function age() {
+            // alert(1);
+            $('#age_of_children').html('');
+            $('#age_of_children').append('Age of Children = [' + a + ']');
+        }
+
     });
 </script>
 
