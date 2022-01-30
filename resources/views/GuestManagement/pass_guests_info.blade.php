@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -35,4 +35,37 @@
                 });
 </script>
 </body>
-</html>
+</html> -->
+
+<!-- @if(isset($guests))
+{{dd($guests)}} -->
+
+<!-- @foreach($guests as $guest) -->
+    <!-- <div>
+        <p>{{$guests->max}}</p>
+        <p>{{$guests->adult_guest}}</p>
+        <p>{{$guests->child_guest}}</p>
+        <p>{{$guests->age_of}}</p>
+    </div> -->
+<!-- @endforeach -->
+<!-- @endif -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div> -->
+    <!-- session()->put('max', request()->get('max'));
+        session()->put('adult_guest', request()->get('adult_guest'));
+        session()->put('child_guest', request()->get('child_guest'));
+        session()->put('age_of', request()->get('age_of')); -->
+        {{dd(Session::get('max'))}}
+        {{dd(Session::get('adult_guest'))}}
+    <!-- </div>
+</body>
+</html> -->

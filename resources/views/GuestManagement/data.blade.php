@@ -1,14 +1,13 @@
-<div>
+
     @if(isset($guests))
 {{dd($guests)}}
 
-<!-- @foreach($guests as $guest)
+<!-- @foreach($guests as $guest) -->
     <div>
-        <p>{{$guest->max}}</p>
-        <p>{{$guest->adult_guest}}</p>
-        <p>{{$guest->child_guest}}</p>
-        <p>{{$guest->age_of}}</p>
+        <p>{{$guests->max}}</p>
+        <p>{{$guests->adult_guest}}</p>
+        <p>{{$guests->child_guest}}</p>
+        <p>{{$guests->age_of}}</p>
     </div>
-@endforeach -->
+<!-- @endforeach -->
 @endif
-</div>

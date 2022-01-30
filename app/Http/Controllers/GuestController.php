@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Session;
 use App\Guest;
 use Illuminate\Http\Request;
 
@@ -22,7 +22,25 @@ class GuestController extends Controller
         // return response()->json(request()->all(), '200');
         // echo response()->json(request()->all(), '200');
         $guests = request()->all();
-        return view('GuestManagement.data', compact('guests'));
+        // if(request()->get('max') != null) {
+           session()->put('max', request()->get('max'));
+        //    Session::put('max', request()->get('max'));
+        session(['max' => request()->get('max')]);
+        // }
+        // if(request()->get('adult_guest') != null) {
+           session()->put('adult_guest', request()->get('adult_guest'));
+        //    Session::put('adult_guest', request()->get('adult_guest'));
+        session(['adult_guest' => request()->get('adult_guest')]);
+        // }
+        if(request()->get('child_guest') != null) {
+           session()->put('child_guest', request()->get('child_guest'));
+        }
+        if(request()->get('age_of') != null) {
+           session()->put('age_of', request()->get('age_of'));
+        }
+        
+        // return response()->json(session()->all(), '200');
+        return view('GuestManagement.pass_guests_info', compact('guests'));
     }
 
     /**
