@@ -312,10 +312,7 @@
                         age_of: age_of
                     },
                     success: function(result) {
-                        // $('.select-area').append('<option selected>Open this select menu</option>');
-                        // $.each(result, function(key, value) {
-                        //     $('.select-area').append('<option value="' + value.id + '">' + value.AreaName + '</option>');
-                        // });
+                        
                         $('#output').html(result);
                         console.log(result, "result");
                     }
