@@ -23,12 +23,12 @@ class GuestController extends Controller
         // echo response()->json(request()->all(), '200');
         $guests = request()->all();
         // if(request()->get('max') != null) {
-           session()->put('max', request()->get('max'));
+        //    session()->put('max', request()->get('max'));
         //    Session::put('max', request()->get('max'));
         session(['max' => request()->get('max')]);
         // }
         // if(request()->get('adult_guest') != null) {
-           session()->put('adult_guest', request()->get('adult_guest'));
+        //    session()->put('adult_guest', request()->get('adult_guest'));
         //    Session::put('adult_guest', request()->get('adult_guest'));
         session(['adult_guest' => request()->get('adult_guest')]);
         // }
