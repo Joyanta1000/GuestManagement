@@ -17,6 +17,14 @@ class GuestController extends Controller
         //
     }
 
+    public function pass_guests_info()
+    {
+        // return response()->json(request()->all(), '200');
+        // echo response()->json(request()->all(), '200');
+        $guests = request()->all();
+        return view('GuestManagement.data', compact('guests'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *

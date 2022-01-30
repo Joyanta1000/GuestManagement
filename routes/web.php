@@ -20,3 +20,13 @@ Route::get('/', function () {
 Route::get('/guest_management', function () {
     return view('GuestManagement.index');
 });
+
+Route::get('/pass_guests_info', 'GuestController@pass_guests_info')->name('pass_guests_info');
+
+// Route::get('pass_guests_info', 'GuestController@pass_guests_info')->name('pass_guests_info');
+
+// Route::get('guest_management_another', 'GuestController@pass_guests_info')->name('guest_management_another');
+
+Route::get('/guest_management_another', function () {
+    return view('GuestManagement.pass_guests_info');
+});
