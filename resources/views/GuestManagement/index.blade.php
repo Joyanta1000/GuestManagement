@@ -210,9 +210,9 @@ integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv
 
                 </label>
 
-                {{-- <div id="output">
+                <div id="output">
 
-                </div> --}}
+                </div>
             </div>
 
         </form>
@@ -311,6 +311,7 @@ integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxV
                 age_of: a
             },
             success: function(result) {
+                
                 $('#output').html(result);
                 console.log(result, "result");
             }

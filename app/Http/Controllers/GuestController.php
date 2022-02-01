@@ -20,19 +20,23 @@ class GuestController extends Controller
 
     public function pass_guests_info()
     {
-        Session::flush();
 
-        if(request()){
-        $guests = request()->all();
-        // if(request()->get('max')!=null && request()->get('adult_guest') != null){
-        session(['data' => [
-            // 'max' => request()->get('max'),
-            'adult_guest' => request()->get('adult_guest'),
-            'child_guest' => request()->get('child_guest'),
+        // $guests = [
+        //     'max' => request()->get('max') ,
+        //     'adult_guest' => request()->get('adult_guest') ,
+        //     'child_guest' => request()->get('child_guest') ,
+        // ];
+        $age = [];
 
-        ]]);
+        $pushed = array_push($age, request()->get('age_of'));
+        // for($i=0; $i<count(request()->get('age_of')); $i++){
+            $guests = [
+                'max' => request()->get('max') ,
+                'adult_guest' => request()->get('adult_guest') ,
+                'child_guest' => request()->get('child_guest') ,
+                'age_of' => $age ,
+            ];
         // }
-        }
 
         // return response()->json(request()->all(), 'hey');
         

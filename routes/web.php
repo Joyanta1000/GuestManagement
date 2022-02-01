@@ -32,3 +32,8 @@ Route::get('/guest_management_another', function () {
     // Session::flush();
     return view('GuestManagement.pass_guests_info');
 });
+
+Route::get('/another_info', function () {
+    // Session::flush();
+    return view('GuestManagement.another_info');
+});
