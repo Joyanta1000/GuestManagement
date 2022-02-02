@@ -13,6 +13,7 @@
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous">
     </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
@@ -31,97 +32,117 @@
 
         var array = [];
         // $(document).ready(function() {
-            var logic = 0;
-            var count = 1;
+        var logic = 0;
+        var count = 1;
 
-            var w = 1;
-            var w_1 = 2;
+        var w = 1;
+        var w_1 = 2;
 
-            $('#add_field').click(function() {
-                addField();
-            });
+        var s = 0;
 
-            function addField(t){
-                var loop = '';
-                var n = 20;
+        var toC = 0;
 
-                var p = this.any;
-                var p_1 = this.any_1;
-                var max = array.reduce(function(a, b) {
-                    return Math.max(a, b);
-                }, 0);
+        $('#add_field').click(function() {
+            s = 1;
+            addField(s);
+        });
+        var loop = '';
 
-                console.log(max, 'max1');
-                
-                loop += '<div><select data-id="' + w + '" class = "to" id="min_' + count + '" value = "0" onclick="ch(this)" >';
-                loop += '<option>Select</option>';
-                for (i = max; i <= 20; i++) {
-                    if(i<t){
-                        loop += '<option value="' + i + '" hidden>' + i + '</option>';
-                    }
-                    else{
+        function addField(t) {
+            loop = '';
+            var n = 20;
+
+            var p = this.any;
+            var p_1 = this.any_1;
+            var max = array.reduce(function(a, b) {
+                return Math.max(a, b);
+            }, 0);
+
+            console.log(max, 'max1');
+
+            loop += '<div><select data-id="' + w + '" class = "select optional" id="min_' + count + '" value = "0" onclick="ch(this)" >';
+            loop += '<option>Select</option>';
+            for (i = max; i <= 20; i++) {
+                if (i < t) {
+                    loop += '<option value="' + i + '" hidden>' + i + '</option>';
+                } else {
                     loop += '<option value="' + i + '">' + i + '</option>';
-                    }
                 }
+            }
 
-                loop += '</select>';
+            loop += '</select>';
 
-                loop += '</select><select data-id="' + w_1 + '" id="max_' + count + '" value = "0" onclick="ch(this)">';
-                loop += '<option>Select</option>';
-                for (i = max; i <= 20; i++) {
-                    if(i<t){
-                        loop += '<option value="' + i + '" hidden>' + i + '</option>';
-                    }
-                    else{
+            loop += '</select><select class = "" data-id="' + w_1 + '" id="max_' + count + '" value = "0" onclick="ch(this)">';
+            loop += '<option>Select</option>';
+            for (i = max; i <= 20; i++) {
+                if (i < t) {
+                    loop += '<option value="' + i + '" hidden>' + i + '</option>';
+                } else {
                     loop += '<option value="' + i + '">' + i + '</option>';
-                    }
                 }
+            }
 
-                loop += '</select><button id = "remove" class = "btn btn-danger">-</button></div>';
-                logic += count;
-                check(logic);
-                count++;
+            loop += '</select><button id = "remove" class = "btn btn-danger">-</button></div>';
+            this.logic += count;
+            check(logic);
+            // ch(logic);
+            count++;
 
-                any++;
-                any_1 += 2;
-                w += 2;
-                w_1 += 2;
+            any++;
+            any_1 += 2;
+            w += 2;
+            w_1 += 2;
 
-                
 
+            // $('#select_field').html('');
+
+            appendOrNot(s, loop, w_1);
+
+
+        }
+
+        $(document).on('click', '#remove', function() {
+            $(this).parent().remove();
+        });
+
+        var ad = 1;
+
+        
+
+        function appendOrNot() {
+            if (s == 1) {
                 $('#select_field').append(loop);
+            } else {
+
+                // toC = w_1;
+
+
+
+                // addField(toC);
             }
-
-            $(document).on('click', '#remove', function() {
-                $(this).parent().remove();
-            });
-
-            var ad = 1;
-
-            function check(logic) {
-                for (var i = 1; i <= logic; i++) {
-                    ad = i;
-                    // $('min_'+1).change(function() {
-                    // alert(ad);
-                    // });
-                    // ch(i);
-                }
-            }
+        }
 
 
 
         // });
 
         function ch(identifier) {
+            
             console.log(any, 'any');
             console.log(any_1, 'any_1');
 
             // var t = document.getElementById('min_' + 1).value;
             var t = $(identifier).val();
             var max = $(identifier).val();
+            // toC = max;
+            // addField(toC);
             var data_id = $(identifier).data('id');
             console.log(t, 't');
+            s = 0;
             // addField(t);
+
+
+
             console.log(data_id, 'data_id');
             if (t != 'Select') {
                 array[data_id] = t;
@@ -140,6 +161,56 @@
 
             console.log(max, 'max');
 
+            
+
+            // option list changing
+            (function($) {
+                // Populates a select drop-down with options in a list 
+                $.fn.populate = function(list) {
+                    return this.append(list.map(item => $('<option>', {
+                        text: item,
+                        value: item
+                    })));
+                };
+            })(jQuery);
+            var list = [];
+            for(i=max;i<=20;i++){
+                list.push(i);
+            }
+
+            // check();
+
+            // for (i = 2; i<=2; i++){
+                
+            //     $('#min_'+i).empty().populate(list);
+            //     // i = i + 1;
+            //     $('#max_'+i).empty().populate(list);
+            // }
+            console.log(identifier.id, 'id');
+
+            console.log($('#'+identifier.id).val(), 'val');
+
+            
+                if($(identifier).val()<max){
+                    // $(identifier).empty().populate(list);
+                }
+                else{
+                    $(identifier).empty().populate(list);
+                }
+
+// option list changing
+
+        }
+
+        function check(logic) {
+            console.log(logic, 'logic');
+            // for (var i = 1; i <= logic; i++) {
+            //     ad = i;
+            //     // $('min_'+1).change(function() {
+            //     // alert(ad);
+            //     // });
+            //     // ch(i);
+            // }
         }
     </script>
 
