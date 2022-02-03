@@ -21,6 +21,28 @@
 <body>
     <div style="padding: 100px;">
 
+        @if(Session::has('error'))
+        <div class="alert alert-danger">
+            {{ Session::get('error') }}
+        </div>
+        @endif
+
+        @if(Session::has('success'))
+        <div class="alert alert-success">
+            {{ Session::get('success') }}
+        </div>
+        @endif
+
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
         <label for="">Change For Children</label>
         <select class="form-control" name="" id="confirmation">
             <option value="">Select</option>
@@ -31,25 +53,29 @@
         <br>
 
         <button id="add_field" class="btn btn-primary hidden">+</button>
+        <form action="{{route('save')}}" method="POST">
+            @csrf
+            <table>
+                <thead id="thead">
 
-<table>
-    <thead id="thead">
-        
-    </thead>
-    <div id="message"></div>
-    <tbody id="select_field">
-        
-    </tbody>
-</table>
+                </thead>
+                <div id="message"></div>
 
-        <!-- <div id="select_field" style="padding-top: 20px;">
+                <tbody id="select_field">
+
+                </tbody>
+
+            </table>
+
+            <!-- <div id="select_field" style="padding-top: 20px;">
             
         </div> -->
-        <br>
+            <br>
 
-        <div>
-            <button id="submit" class="btn btn-success">Add Information</button>
-        </div>
+            <div>
+                <button id="submit" type="submit" class="btn btn-success">Add Information</button>
+            </div>
+        </form>
     </div>
     <script>
         $('#confirmation').change(function() {
@@ -60,8 +86,7 @@
                 $('#thead').html('');
                 $('#thead').append('<tr><td>Min. Age</td><td>Max. Age</td><td></td><td>Price</td><td></td></tr>');
 
-            }
-            else if($(this).val() == 0){
+            } else if ($(this).val() == 0) {
                 $('#add_field').addClass('hidden');
                 $('#select_field').html('');
                 $('#thead').html('');
@@ -69,23 +94,15 @@
             }
         });
 
-
-
         var any = 1;
         var any_1 = 2;
-
         var array = [];
-        // $(document).ready(function() {
         var logic = 0;
         var count = 1;
-
         var w = 1;
         var w_1 = 2;
-
         var s = 0;
-
         var toC = 0;
-
         $('#add_field').click(function() {
             s = 1;
             addField(s);
@@ -95,7 +112,6 @@
         function addField(t) {
             loop = '';
             var n = 20;
-
             var p = this.any;
             var p_1 = this.any_1;
             var max = array.reduce(function(a, b) {
@@ -104,7 +120,7 @@
 
             console.log(max, 'max1');
 
-            loop += '<tr ><td><select data-id="' + w + '" class = "select optional form-control" id="min_' + count + '" value = "0" onclick="ch(this)" required>';
+            loop += '<tr ><td><select name="min[' + count + ']" data-id="' + w + '" class = "select optional form-control" id="min_' + count + '" value = "0" onclick="ch(this)" required>';
             loop += '<option >0</option>';
             for (i = max; i <= 20; i++) {
                 if (i < t) {
@@ -116,7 +132,7 @@
 
             loop += '</select></td>';
 
-            loop += '<td><select class = "form-control" data-id="' + w_1 + '" id="max_' + count + '" value = "0" onclick="ch(this)" required>';
+            loop += '<td><select name="max[' + count + ']" class = "form-control" data-id="' + w_1 + '" id="max_' + count + '" value = "0" onclick="ch(this)" required>';
             loop += '<option>0</option>';
             for (i = max; i <= 20; i++) {
                 if (i < t) {
@@ -126,10 +142,9 @@
                 }
             }
 
-            loop += '</select></td><td><input class="form-control" name="price[]" required/></td><td>Tk</td><td><button id = "remove" class = "btn btn-danger">-</button></td></tr>';
+            loop += '</select></td><td><input class="form-control" name="price[' + count + ']" required/></td><td>Tk</td><td><button id = "remove" class = "btn btn-danger">-</button></td></tr>';
             this.logic += count;
             check(logic);
-            // ch(logic);
             count++;
 
             any++;
@@ -137,39 +152,24 @@
             w += 2;
             w_1 += 2;
 
-
-            // $('#select_field').html('');
-
             appendOrNot(s, loop, w_1);
 
 
         }
 
         $(document).on('click', '#remove', function() {
-            // $('this').parent().remove();
             $(this).closest("tr").remove();
         });
 
         var ad = 1;
-
-
 
         function appendOrNot() {
             if (s == 1) {
                 $('#select_field').append(loop);
             } else {
 
-                // toC = w_1;
-
-
-
-                // addField(toC);
             }
         }
-
-
-
-        // });
 
         var current_selected = [];
 
@@ -179,8 +179,7 @@
 
             var list = [];
 
-            if ($('#min_' + identifier.id.substring(4)).val() > $('#max_' + decreased_1).val() ) {
-                // alert("Select Same As Previous Max Age");
+            if ($('#min_' + identifier.id.substring(4)).val() > $('#max_' + decreased_1).val()) {
                 $('#message').empty();
                 $('#message').append('<label style="color: red;">Select Same As Previous Max Age</label>');
                 $('#min_' + identifier.id.substring(4)).empty().populate(list)
@@ -188,23 +187,15 @@
 
                 $('#message').html('');
 
-
-
-
                 console.log(any, 'any');
                 console.log(any_1, 'any_1');
 
-                // var t = document.getElementById('min_' + 1).value;
                 var t = $(identifier).val();
                 var max = $(identifier).val();
-                // toC = max;
-                // addField(toC);
+
                 var data_id = $(identifier).data('id');
                 console.log(t, 't');
                 s = 0;
-                // addField(t);
-
-
 
                 console.log(data_id, 'data_id');
                 if (t != 'Select') {
@@ -224,11 +215,7 @@
 
                 console.log(max, 'max');
 
-
-
-                // option list changing
                 (function($) {
-                    // Populates a select drop-down with options in a list 
                     $.fn.populate = function(list) {
                         return this.append(list.map(item => $('<option>', {
                             text: item,
@@ -241,24 +228,12 @@
                     list.push(i);
                 }
 
-                // check();
-
-                // for (i = 2; i<=2; i++){
-
-                //     $('#min_'+i).empty().populate(list);
-                //     // i = i + 1;
-                //     $('#max_'+i).empty().populate(list);
-                // }
                 console.log(identifier.id, 'id');
 
                 console.log($('#' + identifier.id).val(), 'val');
 
-                // if(identifier.id == "max"){
-                //     current_selected.push($('#'+identifier.id).val());
-                // }
-
                 console.log($("selector").attr("data-id"), 'data-id');
-                // var array = [];
+
                 if ($('#' + identifier.id).val() <= max) {
                     if (identifier.id.substring(0, 3) == "min") {
                         var decreased = parseInt(identifier.id.substring(4)) - 1;
@@ -277,25 +252,17 @@
                         }
                     }
                 } else {
-                    // $(identifier).empty().populate(list);
+
                     $('#' + identifier.id).empty().populate(list);
                 }
 
 
             }
-            // option list changing
 
         }
 
         function check(logic) {
             console.log(logic, 'logic');
-            // for (var i = 1; i <= logic; i++) {
-            //     ad = i;
-            //     // $('min_'+1).change(function() {
-            //     // alert(ad);
-            //     // });
-            //     // ch(i);
-            // }
         }
     </script>
 

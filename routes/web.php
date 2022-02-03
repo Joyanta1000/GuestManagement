@@ -37,3 +37,5 @@ Route::get('/another_info', function () {
     // Session::flush();
     return view('GuestManagement.another_info');
 });
+
+Route::post('/save', 'GuestController@store')->name('save');

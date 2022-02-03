@@ -1,10 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Session;
 use App\Guest;
 use Illuminate\Contracts\Session\Session as SessionSession;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Validator;
 
 class GuestController extends Controller
 {
@@ -30,16 +33,16 @@ class GuestController extends Controller
 
         $pushed = array_push($age, request()->get('age_of'));
         // for($i=0; $i<count(request()->get('age_of')); $i++){
-            $guests = [
-                'max' => request()->get('max') ,
-                'adult_guest' => request()->get('adult_guest') ,
-                'child_guest' => request()->get('child_guest') ,
-                'age_of' => $age ,
-            ];
+        $guests = [
+            'max' => request()->get('max'),
+            'adult_guest' => request()->get('adult_guest'),
+            'child_guest' => request()->get('child_guest'),
+            'age_of' => $age,
+        ];
         // }
 
         // return response()->json(request()->all(), 'hey');
-        
+
         return view('GuestManagement.pass_guests_info', compact('guests'));
     }
 
@@ -63,7 +66,23 @@ class GuestController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $input = $request->all();
+
+        $rules = [];
+
+        $i = 1;
+        foreach ($input['min'] as $key => $val) {
+            $rules['min.' . $i] = 'required';
+            $i++;
+        }
+
+        $validator = Validator::make($input, $rules);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->with('error', 'Sequence is not valid');
+        }
+
     }
 
     /**
