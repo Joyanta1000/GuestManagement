@@ -39,3 +39,10 @@ Route::get('/another_info', function () {
 });
 
 Route::post('/save', 'GuestController@store')->name('save');
+
+Route::get('/service', function () {
+    // Session::flush();
+    return view('ServiceManagement.index');
+});
+
+Route::get('serviceDetailsShow','ServiceController@serviceDetailsShow');
