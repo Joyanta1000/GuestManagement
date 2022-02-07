@@ -13,3 +13,7 @@ https://mega.nz/file/3hQnGQCb#G4ImXAe0qYp-FWr_6NoeWE9Rs4SRKXzIz7K7-Lr3o64
 Add more input fields, and input field wise outputs (js)
 
 https://www.awesomescreenshot.com/video/7232945?key=30c3f6b9990043c5344f202b8193eded
+
+passing 2 values by multiple input fields
+
+https://mega.nz/file/O5Y0QTbK#eCcWXTyCpPuIWXJFQTBf-q_n1HY3OeD_OIU9s8KHZE8
