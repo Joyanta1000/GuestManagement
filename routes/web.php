@@ -46,3 +46,10 @@ Route::get('/service', function () {
 });
 
 Route::get('serviceDetailsShow','ServiceController@serviceDetailsShow');
+
+Route::get('/calculation', function () {
+    // Session::flush();
+    return view('ServiceManagement.calculation');
+});
+
+Route::get('showFields', 'ServiceController@showFields');

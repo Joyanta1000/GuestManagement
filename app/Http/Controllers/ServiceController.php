@@ -16,15 +16,16 @@ class ServiceController extends Controller
         //
     }
 
-    public function serviceDetailsShow(){
-        
+    public function serviceDetailsShow()
+    {
+
         $service_id = request()->get('service_id');
         $service_name = request()->get('service_name');
-        $rand = rand(1,10);
+        $rand = rand(1, 10);
         $ids_id = request()->get('ids_id');
         $id = request()->get('id');
-        
-         //echo $service_name;
+
+        //echo $service_name;
         //  $field = '';
         //  if($service_name != null){
         //     $field .="<input type='text' id='$service_id' name='service_name[]' class='form-control' value='$service_name'/>";
@@ -40,13 +41,29 @@ class ServiceController extends Controller
         // return response()->json(['field' => $field]);
 
         return view('ServiceManagement.service', compact('service_name', 'id', 'service_id', 'rand', 'ids_id'));
-     }
+    }
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function showFields()
+    {
+        $total = request()->get('total');
+        $c_a = request()->get('c_a');
+        $operation = request()->get('operation');
+        if($operation == 1){
+            $total = $total + $c_a;
+        }
+        if($operation == 2){
+            $total = $total - $c_a;
+        }
+        echo response()->json(['total' => $total]);
+        echo "<tr><td><input type='text' id='total_another' class='form-control' placeholder='Total' value='$total'></td></tr>";
+    }
+
     public function create()
     {
         //
