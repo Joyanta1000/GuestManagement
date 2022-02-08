@@ -68,6 +68,13 @@
         };
         arr.push(obj);
         $("#addMore").click(function() {
+            obj = {
+                id: null,
+                c_a: 0,
+                operation: 0,
+            };
+            arr.push(obj);
+
             initialize++;
             var html = '';
             html += '<tr id = "tr_' + initialize + '">';
@@ -78,12 +85,7 @@
 
             $('#row').append(html);
 
-            obj = {
-                id: null,
-                c_a: 0,
-                operation: 0,
-            };
-            arr.push(obj);
+            
 
             fun(initialize);
 
@@ -97,8 +99,10 @@
             var id = trid.split('_');
             console.log(id[1], 'trid_num');
             index = parseInt(id[1]);
-            arr.splice(index - 1, 1);
-            console.log(arr, 'after removing');
+            rmv = index - 1;
+            console.log(rmv, 'rmv');
+            arr.splice(rmv, 1);
+            console.log(arr, 'after removing' , $('#total').val(), 'total');
             $.ajax({
                 method: "GET",
                 url: "{{ url('showFields') }}",

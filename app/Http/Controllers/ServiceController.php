@@ -93,6 +93,7 @@ class ServiceController extends Controller
                 }
             }
         }
+        //  echo response()->json(['count' => count(request()->get('info')) , 'info' => request()->get('info')]);
         echo "<tr><td><input type='text' id='total_another' class='form-control' placeholder='Total' value='$total_output'></td></tr>";
     }
 
