@@ -13,7 +13,7 @@
     <table>
         <tbody>
             <tr>
-                <td><input type="text" id="total" class="form-control" placeholder="Total"></td>
+                <td><input type="text" id="total" onclick="fun(1)" class="form-control" placeholder="Total"></td>
             </tr>
         </tbody>
     </table>
@@ -57,13 +57,20 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script type="text/javascript">
-        // add row
+        var arr = new Array();
+        var obj = {};
         var initialize = 1;
         var init = 1;
+        obj = {
+            id: null,
+            c_a: 0,
+            operation: 0,
+        };
+        arr.push(obj);
         $("#addMore").click(function() {
             initialize++;
             var html = '';
-            html += '<tr>';
+            html += '<tr id = "tr_' + initialize + '">';
             html += '<td><select name="operation[]" id="operation_' + initialize + '" class="form-control"><option value="0" selected>Select Operation</option><option value="1">Add</option><option value="2">Subtract</option></select></td>';
             html += '<td><input type="text" id="c_a_' + initialize + '" class="form-control" placeholder="Cost/Addition"></td>';
             html += '<td><input type="text" id="comment_' + initialize + '" class="form-control" placeholder="Comment"></td>';
@@ -71,59 +78,90 @@
 
             $('#row').append(html);
 
+            obj = {
+                id: null,
+                c_a: 0,
+                operation: 0,
+            };
+            arr.push(obj);
+
             fun(initialize);
 
-            // $.ajax({
-            //     method: "GET",
-            //     url: "{{ url('showFields') }}",
-            //     data: {
-            //         initialize: initialize,
-            //     },
-            //     success: function(result) {
-            //         console.log(result);
-            //         $("#row").html(result);
-            //     }
-            // });
         });
 
         // remove row
         $(document).on('click', '#remove', function() {
             $(this).closest('tr').remove();
+            var trid = $(this).closest('tr').attr('id');
+            console.log(trid);
+            var id = trid.split('_');
+            console.log(id[1], 'trid_num');
+            index = parseInt(id[1]);
+            arr.splice(index - 1, 1);
+            console.log(arr, 'after removing');
+            $.ajax({
+                method: "GET",
+                url: "{{ url('showFields') }}",
+                data: {
+                    total: $('#total').val(),
+                    info: arr,
+                },
+                success: function(result) {
+                    per = 0;
+                    localStorage.setItem("per", per);
+                    console.log(result);
+                    $("#another_total").html(result);
+                }
+            });
         });
+
+
 
         function fun(init) {
             init = initialize;
-            // console.log(init);
             total = 0;
+            var per = 0;
             for (var i = 1; i <= init; i++) {
+
+                $('#total').keyup(function() {
+                    per = 1;
+                    localStorage.setItem("per", per);
+
+
+                });
                 $('#operation_' + i).change(function() {
-                    var id = $(this).attr('id');
+                    var id = this.id;
                     var operation = $(this).val();
                     c_a = $('#c_a_' + id.substring(10)).val();
                     console.log(c_a, 'c_a');
                     console.log(operation, 'operation');
-                    total = $('#total').val();
+                    console.log(i, $('#total_another').val(), 'total_another');
+                    total = $('#total_another').val() != 0 ? $('#total_another').val() : $('#total').val();
                     console.log(total, 'total');
-                    // var id = $(this).attr('id');
-                    // console.log(id,'id');
-                    // var id_split = id.split('_');
-                    // console.log(id_split,'id_split');
-                    // var id_num = id_split[1];
-                    // console.log(id_num, 'id_num');
-                    // if (operation == 1) {
-                    //     $('#c_a_' + id_num).attr('placeholder', 'Cost/Addition');
-                    // } else if (operation == 2) {
-                    //     $('#c_a_' + id_num).attr('placeholder', 'Cost/Subtraction');
-                    // }
+                    obj = {
+                        id: id,
+                        c_a: c_a,
+                        operation: operation,
+                    };
+                    arr.splice(parseInt(id.slice(10)) - 1, 1, obj);
+
+                    console.log(arr, 'arr');
+
+                    const map1 = new Map();
+
+
+                    per = localStorage.getItem("per");
+                    console.log(per, 'per');
                     $.ajax({
                         method: "GET",
                         url: "{{ url('showFields') }}",
                         data: {
-                            total: total,
-                            c_a: c_a,
-                            operation: operation,
+                            total: $('#total').val(),
+                            info: arr,
                         },
                         success: function(result) {
+                            per = 0;
+                            localStorage.setItem("per", per);
                             console.log(result);
                             $("#another_total").html(result);
                         }
@@ -131,54 +169,48 @@
                 });
 
                 $('#c_a_' + i).keyup(function() {
-                    var id = $(this).attr('id');
+                    var id = this.id;
+                    console.log(id, 'this id');
                     var c_a = $(this).val();
                     console.log(c_a, 'c_a');
                     operation = $('#operation_' + id.substring(4)).val();
                     console.log(operation, 'operation');
-                    total = $('#total').val();
+                    total = $('#total_another').val() != 0 ? $('#total_another').val() : $('#total').val();
                     console.log(total, 'total');
                     var c_a = $(this).val();
                     console.log(c_a, 'c_a');
-                    // var id = $(this).attr('id');
-                    // console.log(id,'id');
-                    // var id_split = id.split('_');
-                    // console.log(id_split,'id_split');
-                    // var id_num = id_split[1];
-                    // console.log(id_num, 'id_num');
-                    // if (operation == 1) {
-                    //     $('#c_a_' + id_num).attr('placeholder', 'Cost/Addition');
-                    // } else if (operation == 2) {
-                    //     $('#c_a_' + id_num).attr('placeholder', 'Cost/Subtraction');
-                    // }
 
+                    obj = {
+                        id: id,
+                        c_a: c_a,
+                        operation: operation,
+                    };
+
+                    arr.splice(parseInt(id.slice(4)) - 1, 1, obj);
+
+                    console.log(arr, 'arr');
+
+                    const map1 = new Map();
+
+                    per = localStorage.getItem("per");
+                    console.log(per, 'per');
                     $.ajax({
                         method: "GET",
                         url: "{{ url('showFields') }}",
                         data: {
-                            total: total,
-                            c_a: c_a,
-                            operation: operation,
+                            total: $('#total').val(),
+                            info: arr,
                         },
                         success: function(result) {
-                            console.log(result['total']);
+                            console.log(result);
+                            per = 0;
+                            localStorage.setItem("per", per);
                             $("#another_total").html(result);
                         }
                     });
                 });
             }
         }
-
-
-        // }
-
-        // function check(identifier){
-        //     console.log(identifier.id.substr(4));
-
-        //     // $('#operation_'+identifier.id.substr(4)).val();
-
-        //     console.log($('#operation_'+identifier.id.substr(4)).val(), 'value');
-        // }
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

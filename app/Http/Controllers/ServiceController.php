@@ -13,7 +13,24 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        //
+        $data = collect([
+            [
+                ["id" => 1, "name" => "Hardik"],
+                ["id" => 1, "name" => "Hardik"],
+                ["id" => 2, "name" => "Mahesh"],
+                ["id" => 3, "name" => "Rakesh"],
+            ],
+            [
+                ["id" => 1, "name" => "Hardik"],
+                ["id" => 3, "name" => "Kiran"],
+            ]
+        ]);
+
+        $data = $data->map(function ($array) {
+            return collect($array)->unique('id')->all();
+        });
+
+        dd($data);
     }
 
     public function serviceDetailsShow()
@@ -51,17 +68,32 @@ class ServiceController extends Controller
 
     public function showFields()
     {
+        // $info = collect( [request()->get('info') ] )->map(function ($array) {
+        //     return collect($array)->unique('id')->all();
+        // });
+        // $total = request()->get('total');
+
+        $info = request()->get('info');
         $total = request()->get('total');
-        $c_a = request()->get('c_a');
-        $operation = request()->get('operation');
-        if($operation == 1){
-            $total = $total + $c_a;
+
+
+        $total_output = 0;
+        for ($i = 0; $i < count($info); $i++) {
+            $operation = $info[$i]['operation'] ? $info[$i]['operation'] : 0;
+            $c_a = $info[$i]['c_a'] ? $info[$i]['c_a'] : 0;
+            if ($operation == 1 && $c_a != 0) {
+                $total = $total + $c_a;
+            }
+            if ($operation == 2 && $c_a != 0) {
+                $total = $total - $c_a;
+            }
+            if ($operation == 1 || $operation == 2) {
+                if ($c_a != 0) {
+                    $total_output = $total;
+                }
+            }
         }
-        if($operation == 2){
-            $total = $total - $c_a;
-        }
-        echo response()->json(['total' => $total]);
-        echo "<tr><td><input type='text' id='total_another' class='form-control' placeholder='Total' value='$total'></td></tr>";
+        echo "<tr><td><input type='text' id='total_another' class='form-control' placeholder='Total' value='$total_output'></td></tr>";
     }
 
     public function create()
