@@ -28,14 +28,14 @@
         <tbody id="row">
             <tr>
                 <td>
-                    <select name="operation[]" onclick="fun(1)" id="operation_1" class="form-control">
+                    <select name="operation[]" onclick="fun(0)" id="operation_0" class="form-control">
                         <option value="0" selected>Select Operation</option>
                         <option value="1">Add</option>
                         <option value="2">Subtract</option>
                     </select>
                 </td>
                 <td>
-                    <input type="text" id="c_a_1" onkeyup="fun(1)" class="form-control" placeholder="Cost/Addition">
+                    <input type="text" id="c_a_0" onkeyup="fun(0)" class="form-control" placeholder="Cost/Addition">
                 </td>
                 <td>
                     <input type="text" id="comment_1" class="form-control" placeholder="Comment">
@@ -54,13 +54,17 @@
         </tbody>
     </table>
 
+    <div id="message">
+
+    </div>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script type="text/javascript">
         var arr = new Array();
         var obj = {};
-        var initialize = 1;
-        var init = 1;
+        var initialize = 0;
+        var init = 0;
         obj = {
             id: null,
             c_a: 0,
@@ -84,10 +88,8 @@
             html += '<td><button id="remove" class="btn btn-danger">-</button></td></tr>';
 
             $('#row').append(html);
-
-            
-
             fun(initialize);
+
 
         });
 
@@ -99,10 +101,21 @@
             var id = trid.split('_');
             console.log(id[1], 'trid_num');
             index = parseInt(id[1]);
-            rmv = index - 1;
-            console.log(rmv, 'rmv');
-            arr.splice(rmv, 1);
-            console.log(arr, 'after removing' , $('#total').val(), 'total');
+            // rmv = index;
+            // console.log(rmv, 'rmv');
+            // arr.splice(rmv, 1);
+            obj = {
+                id: null,
+                c_a: 0,
+                operation: 0,
+            };
+            // arr.push(obj);
+            // var index = items.indexOf(3452);
+
+            if (index !== -1) {
+                arr[index] = obj;
+            }
+            console.log(arr, 'after removing', $('#total').val(), 'total');
             $.ajax({
                 method: "GET",
                 url: "{{ url('showFields') }}",
@@ -114,7 +127,10 @@
                     per = 0;
                     localStorage.setItem("per", per);
                     console.log(result);
+                    // $("#message").append('<div class="alert alert-danger">Wait for some times</div>');
+
                     $("#another_total").html(result);
+                    // $("#message").html('');
                 }
             });
         });
@@ -125,14 +141,36 @@
             init = initialize;
             total = 0;
             var per = 0;
-            for (var i = 1; i <= init; i++) {
 
-                $('#total').keyup(function() {
-                    per = 1;
-                    localStorage.setItem("per", per);
+            $('#total').keyup(function() {
+                // alert('hi');
+                per = 1;
+                localStorage.setItem("per", per);
+                // $('#another_total').html('');
+                // $("#another_total").append('<tr><td><input type="text" id="total_another" class="form-control" placeholder="Total" value="'+$('#total').val()+'"></td></tr>');
 
+                $.ajax({
+                    method: "GET",
+                    url: "{{ url('showFields') }}",
+                    data: {
+                        total: $('#total').val(),
+                        info: arr,
+                    },
+                    success: function(result) {
+                        per = 0;
+                        localStorage.setItem("per", per);
+                        console.log(result);
+                        // $("#message").append('<div class="alert alert-danger">Wait for some times</div>');
 
+                        $("#another_total").html(result);
+                        // $("#message").html('');
+                    }
                 });
+            });
+
+            for (var i = 0; i <= init; i++) {
+
+
                 $('#operation_' + i).change(function() {
                     var id = this.id;
                     var operation = $(this).val();
@@ -147,7 +185,7 @@
                         c_a: c_a,
                         operation: operation,
                     };
-                    arr.splice(parseInt(id.slice(10)) - 1, 1, obj);
+                    arr.splice(parseInt(id.slice(10)), 1, obj);
 
                     console.log(arr, 'arr');
 
@@ -167,7 +205,10 @@
                             per = 0;
                             localStorage.setItem("per", per);
                             console.log(result);
+                            // $("#message").append('<div class="alert alert-danger">Wait for some times</div>');
+
                             $("#another_total").html(result);
+                            // $("#message").html('');
                         }
                     });
                 });
@@ -190,7 +231,7 @@
                         operation: operation,
                     };
 
-                    arr.splice(parseInt(id.slice(4)) - 1, 1, obj);
+                    arr.splice(parseInt(id.slice(4)), 1, obj);
 
                     console.log(arr, 'arr');
 
@@ -209,7 +250,10 @@
                             console.log(result);
                             per = 0;
                             localStorage.setItem("per", per);
+                            // $("#message").append('<div class="alert alert-danger">Wait for some times</div>');
+
                             $("#another_total").html(result);
+                            // $("#message").html('');
                         }
                     });
                 });

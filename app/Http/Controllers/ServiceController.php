@@ -77,7 +77,7 @@ class ServiceController extends Controller
         $total = request()->get('total');
 
 
-        $total_output = 0;
+        $total_output = $total ? $total : 0;
         for ($i = 0; $i < count($info); $i++) {
             $operation = $info[$i]['operation'] ? $info[$i]['operation'] : 0;
             $c_a = $info[$i]['c_a'] ? $info[$i]['c_a'] : 0;
