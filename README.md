@@ -17,3 +17,7 @@ https://www.awesomescreenshot.com/video/7232945?key=30c3f6b9990043c5344f202b8193
 passing 2 values by multiple input fields
 
 https://mega.nz/file/O5Y0QTbK#eCcWXTyCpPuIWXJFQTBf-q_n1HY3OeD_OIU9s8KHZE8
+
+Calculation
+
+https://www.awesomescreenshot.com/video/7286694?key=cf66d9ece14ca78a83f21ce7a7c0a98b
