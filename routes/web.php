@@ -54,3 +54,4 @@ Route::get('/calculation', function () {
 
 Route::get('showFields', 'ServiceController@showFields');
 Route::get('showFieldsEx', 'ServiceController@index');
+Route::get('showSelectFields', 'ServiceController@showSelectFields');

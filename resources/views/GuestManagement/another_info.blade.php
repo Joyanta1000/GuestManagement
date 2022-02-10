@@ -53,19 +53,14 @@
         <br>
 
         <button id="add_field" class="btn btn-primary hidden">+</button>
-        <form action="{{route('save')}}" method="POST">
+        <form action="{{route('save')}}" method="POST" onsubmit="return checkMyForm();">
             @csrf
-            <table>
-                <thead id="thead">
+            <div id="table">
 
-                </thead>
-                <div id="message"></div>
+            </div>
 
-                <tbody id="select_field">
 
-                </tbody>
 
-            </table>
 
             <!-- <div id="select_field" style="padding-top: 20px;">
             
@@ -73,41 +68,73 @@
             <br>
 
             <div>
-                <button id="submit" type="submit" class="btn btn-success">Add Information</button>
+                <button id="submit" type="submit" class="UploadBtn btn bm bco mbs mts">Add Information</button>
             </div>
         </form>
     </div>
     <script>
         $('#confirmation').change(function() {
-            if ($(this).val() == 1) {
-                s = 1;
-                addField(s);
-                $('#add_field').removeClass('hidden');
-                $('#thead').html('');
-                $('#thead').append('<tr><td>Min. Age</td><td>Max. Age</td><td></td><td>Price</td><td></td></tr>');
+            var open = 0;
+            // if ($(this).val() == 1) {
+            s = 1;
+            open = 1;
+            addField(s);
+            $.ajax({
+                method: "GET",
+                url: "{{ url('showSelectFields') }}",
+                data: {
+                    open: $(this).val(),
+                },
+                success: function(result) {
+                    // per = 0;
+                    // localStorage.setItem("per", per);
+                    console.log(result);
 
-            } else if ($(this).val() == 0) {
-                $('#add_field').addClass('hidden');
-                $('#select_field').html('');
-                $('#thead').html('');
-                $('#add_btn').addClass('hidden');
-            }
+                    $('#table').html(JSON.stringify(result));
+
+                    // $("#message").append('<div class="alert alert-danger">Wait for some times</div>');
+
+                    // $("#another_total").html(result);
+                    // $("#message").html('');
+                }
+            });
+            // $('#add_field').removeClass('hidden');
+            // $('#thead').html('');
+            // $('#thead').append('<tr><td>Min. Age</td><td>Max. Age</td><td></td><td>Price</td><td></td></tr>');
+
+            // } else if ($(this).val() == 0) {
+            // $('#add_field').addClass('hidden');
+            // $('#select_field').html('');
+            // $('#thead').html('');
+            // $('#add_btn').addClass('hidden');
+            // }
         });
 
-        var any = 1;
-        var any_1 = 2;
+        var any = 2;
+        var any_1 = 3;
         var array = [];
         var logic = 0;
-        var count = 1;
-        var w = 1;
-        var w_1 = 2;
+        var count = 2;
+        var w = 2;
+        var w_1 = 3;
         var s = 0;
         var toC = 0;
-        $('#add_field').click(function() {
+
+        var ent = 1;
+
+        function addfield() {
+            // alert('hello');
             s = 1;
             addField(s);
-        });
+        }
+        // $('#add_field').click(function() {
+        //     s = 1;
+        //     addField(s);
+        //     alert('hello');
+        // });
         var loop = '';
+
+
 
         function addField(t) {
             loop = '';
@@ -120,20 +147,29 @@
 
             console.log(max, 'max1');
 
-            loop += '<tr ><td><select name="min[' + count + ']" data-id="' + w + '" class = "select optional form-control" id="min_' + count + '" value = "0" onclick="ch(this)" required>';
-            loop += '<option >0</option>';
-            for (i = max; i <= 20; i++) {
-                if (i < t) {
-                    loop += '<option value="' + i + '" hidden>' + i + '</option>';
-                } else {
-                    loop += '<option value="' + i + '">' + i + '</option>';
-                }
+            loop += '<tr ><td><select name="min[' + count + ']" data-id="' + w + '" class = "select optional form-control" id="min_' + count + '" onclick="ch(this)" required>';
+            loop += '<option value = "0" selected>Select</option>';
+
+            for (i = max; i <= max; i++) {
+
+                // if (i > t) {
+                //     loop += '<option value="' + i + '" hidden>' + i + '</option>';
+                // } else  {
+
+                // loop += '<option value="' + i + '" hidden>' + i + '</option>';
+                loop += '<option value="' + i + '" >' + i + '</option>';
+                // ent = ent+1; 
+                // }
+                // else{
+                //     loop += '<option value="' + i + '" selected>' + i + '</option>';
+                // }
+                break;
             }
 
             loop += '</select></td>';
 
-            loop += '<td><select name="max[' + count + ']" class = "form-control" data-id="' + w_1 + '" id="max_' + count + '" value = "0" onclick="ch(this)" required>';
-            loop += '<option>0</option>';
+            loop += '<td><select name="max[' + count + ']" class = "form-control" data-id="' + w_1 + '" id="max_' + count + '" onclick="ch(this)" required>';
+            loop += '<option value = "0">Select</option>';
             for (i = max; i <= 20; i++) {
                 if (i < t) {
                     loop += '<option value="' + i + '" hidden>' + i + '</option>';
@@ -175,9 +211,12 @@
 
         function ch(identifier) {
 
+            // alert(identifier.id);
+
             var decreased_1 = parseInt(identifier.id.substring(4)) - 1;
 
             var list = [];
+            var list_1 = [];
 
             if ($('#min_' + identifier.id.substring(4)).val() > $('#max_' + decreased_1).val()) {
                 $('#message').empty();
@@ -228,6 +267,19 @@
                     list.push(i);
                 }
 
+                (function($) {
+                    $.fn.populate = function(list_1) {
+                        return this.append(list_1.map(item => $('<option>', {
+                            text: item,
+                            value: item
+                        })));
+                    };
+                })(jQuery);
+
+                for (i = max; i <= max; i++) {
+                    list_1.push(i);
+                }
+
                 console.log(identifier.id, 'id');
 
                 console.log($('#' + identifier.id).val(), 'val');
@@ -243,11 +295,16 @@
                             console.log(increased, 'increased');
 
                             var list = [];
+                            var list_1 = [];
                             for (i = $('#max_' + decreased).val(); i <= 20; i++) {
                                 list.push(i);
                             }
 
-                            $('#' + identifier.id.substring(0, 3) + "_" + increased).empty().populate(list);
+                            for (i = $('#max_' + decreased).val(); i <= $('#max_' + decreased).val(); i++) {
+                                list_1.push(i);
+                            }
+
+                            $('#' + identifier.id.substring(0, 3) + "_" + increased).empty().populate(list_1);
                             $('#max_' + increased).empty().populate(list);
                         }
                     }
@@ -264,6 +321,55 @@
         function check(logic) {
             console.log(logic, 'logic');
         }
+        // $(document).on("click", ".UploadBtn", function(event) {
+        // $(".p").each(function(file) {
+        // if ($(this).val()) {
+        //     $(".loader").show();
+        //     $(".spinner").show();
+        // $(".UploadBtn").prop("disabled", "true");
+        // }
+        // })
+        function checkMyForm() {
+            var disabled = 0;
+            var co = 3;
+            for (x = 3; x <= array.length - 2; x++) {
+                if (array[co + 1] != null) {
+
+                    if (array[co] == array[co + 1]) {
+                        // isEqual = false; 
+                        console.log(array[co], 'array[co]');
+                        console.log(array[co + 1], 'array[co + 1]');
+                        // $(".UploadBtn").prop("disabled", "false");
+                        co = co + 2;
+                    } else if (array[co] != array[co + 1]) {
+                        console.log(array[co], 'array[co] q');
+                        console.log(array[co + 1], 'array[co + 1] q');
+                        disabled = 1;
+
+                    }
+
+                }
+
+                // x++;
+            }
+
+            if (disabled == 1) {
+                // $(".UploadBtn").prop("disabled", "true");
+                // returnToPreviousPage();
+                return false;
+            }
+            else {
+                return true;
+            }
+            // if(co==0){
+            //     $(".UploadBtn").prop("disabled", "true");
+            // }
+            // else{
+            //     $(".UploadBtn").prop("disabled", "false");
+            // }
+            console.log(co, 'co', array.length);
+        }
+        // });
     </script>
 
 
