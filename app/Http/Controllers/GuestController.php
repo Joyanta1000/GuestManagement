@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\AgeWisePrice;
 use Illuminate\Support\Facades\Session;
 use App\Guest;
 use Illuminate\Contracts\Session\Session as SessionSession;
@@ -67,7 +68,23 @@ class GuestController extends Controller
     public function store(Request $request)
     {
 
-        dd('Ok');
+        
+
+        for($i = 1; $i <= count($request->get('min')); $i++){
+            if($request->get('min')[$i+1] != null){
+            $guests = new AgeWisePrice();
+            $guests->room_id = 1;
+            $guests->min = $request->get('min')[$i+1];
+            $guests->max = $request->get('max')[$i+1];
+            $guests->price = $request->get('price')[$i+1];
+            $guests->is_active = 1;
+            $guests->save();
+            }
+        }
+
+        dd(count($request->get('min')), $request->all());
+
+        
 
         // $input = $request->all();
 
@@ -93,9 +110,10 @@ class GuestController extends Controller
      * @param  \App\Guest  $guest
      * @return \Illuminate\Http\Response
      */
-    public function show(Guest $guest)
+    public function show($id)
     {
-        //
+        $awp = AgeWisePrice::where('room_id', $id)->get();
+        dd($awp);
     }
 
     /**

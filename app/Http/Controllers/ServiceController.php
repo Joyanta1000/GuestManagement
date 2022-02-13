@@ -102,18 +102,18 @@ class ServiceController extends Controller
         if(request()->get('open') == 1)
         {
             $output .= "<table><thead id='thead'><tr><td>Min. Age</td><td>Max. Age</td><td></td><td>Price</td><td></td></tr></thead><div id='message'></div>";
-            $output .= "<tr ><td><select name='min[1]' data-id='2' class = 'select optional form-control' id='min_2' onclick='ch(this)' required>";
+            $output .= "<tr ><td><select name='min[2]' data-id='2' class = 'select optional form-control' id='min_2' onclick='ch(this)' required>";
             $output .= "<option value = '' >Select</option>";
             for($i = 0; $i <= 20; $i++){
                 $output .= "<option value='$i'>$i</option>";
             }
             $output .= "</select></td>";
-            $output .= "<td><select name='max[1]' class = 'form-control' data-id='3' id='max_2' onclick='ch(this)' required>";
+            $output .= "<td><select name='max[2]' class = 'form-control' data-id='3' id='max_2' onclick='ch(this)' required>";
             $output .= "<option value = ''>Select</option>";
             for($i = 1; $i <= 20; $i++){
                 $output .= "<option value='$i'>$i</option>";
             }
-            $output .= "</select></td><td><input class='form-control' name='price[1]' required/></td><td>Tk</td><td><a id = 'add_field' onclick='addfield()' class = 'btn btn-success'>+</a></td></tr>";
+            $output .= "</select></td><td><input class='form-control' name='price[2]' required/></td><td>Tk</td><td><a id = 'add_field' onclick='addfield()' class = 'btn btn-success'>+</a></td></tr>";
             $output .= "<tbody id='select_field'></tbody></table>";
             echo $output;
         }

@@ -310,8 +310,9 @@
 
             if ($('#min_' + identifier.id.substring(4)).val() > $('#max_' + decreased_1).val()) {
                 $('#message').empty();
-                $('#message').append('<label style="color: red;">Select Same As Previous Max Age</label>');
+                
                 $('#min_' + identifier.id.substring(4)).empty().populate(list)
+                $('#message').append('<label style="color: red;">Select Same As Previous Max Age</label>');
             } else {
 
                 $('#message').html('');
@@ -421,7 +422,7 @@
                     }
                 } else {
 
-                    // $('#' + identifier.id).empty().populate(list);
+                    $('#' + identifier.id).empty().populate(list);
                 }
 
 

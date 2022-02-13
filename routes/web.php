@@ -40,6 +40,8 @@ Route::get('/another_info', function () {
 
 Route::post('/save', 'GuestController@store')->name('save');
 
+Route::get('age_wise_prices/{id}', 'GuestController@show')->name('age_wise_prices');
+
 Route::get('/service', function () {
     // Session::flush();
     return view('ServiceManagement.index');
