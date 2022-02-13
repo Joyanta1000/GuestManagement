@@ -6,7 +6,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style>
+        #snackbar {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            font-size: 17px;
+        }
 
+        #snackbar.show {
+            visibility: visible;
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @-webkit-keyframes fadein {
+            from {
+                bottom: 0;
+                opacity: 0;
+            }
+
+            to {
+                bottom: 30px;
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadein {
+            from {
+                bottom: 0;
+                opacity: 0;
+            }
+
+            to {
+                bottom: 30px;
+                opacity: 1;
+            }
+        }
+
+        @-webkit-keyframes fadeout {
+            from {
+                bottom: 30px;
+                opacity: 1;
+            }
+
+            to {
+                bottom: 0;
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeout {
+            from {
+                bottom: 30px;
+                opacity: 1;
+            }
+
+            to {
+                bottom: 0;
+                opacity: 0;
+            }
+        }
+    </style>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
@@ -62,9 +132,12 @@
 
 
 
-            <!-- <div id="select_field" style="padding-top: 20px;">
-            
-        </div> -->
+            <div id="snackbar" class="">
+                Sequence is not correct
+            </div>
+            <div id="sequence">
+
+            </div>
             <br>
 
             <div>
@@ -119,6 +192,8 @@
         var w_1 = 3;
         var s = 0;
         var toC = 0;
+        var removed = 1;
+        var addedField = 1;
 
         var ent = 1;
 
@@ -137,6 +212,11 @@
 
 
         function addField(t) {
+            addedField++;
+            removed = 1;
+            array.push(0);
+            array.push(0);
+            console.log(array);
             loop = '';
             var n = 20;
             var p = this.any;
@@ -194,7 +274,17 @@
         }
 
         $(document).on('click', '#remove', function() {
+            var id = $(this).parent().parent().find('select').attr('data-id');
+            var id_1 = parseInt(id) + 1;
+            for (var i = id; i <= id_1; i++) {
+
+                array[i] = 0;
+            }
+            console.log(id);
+            console.log(array, 'after removing');
             $(this).closest("tr").remove();
+            removed++;
+            console.log(removed, 'removed');
         });
 
         var ad = 1;
@@ -288,9 +378,25 @@
 
                 if ($('#' + identifier.id).val() <= max) {
                     if (identifier.id.substring(0, 3) == "min") {
+                        // for (u = 1; u <= removed; u++) {
                         var decreased = parseInt(identifier.id.substring(4)) - 1;
+                        console.log(decreased, '1st decreased', removed, 'removed to');
+                        for (i = 1; i <= addedField; i++) {
+                            var decreased = parseInt(identifier.id.substring(4)) - i;
+                            console.log(decreased, '2nd decreased');
+                            console.log($('#max_' + decreased).val(), 'max_' + decreased);
+                            if ($('#max_' + decreased).val() == null) {
+                                if (decreased != 2) {
+                                    decreased = decreased - 1;
+                                    // removed = removed + 1;
+                                }
+
+                            } else {
+                                break;
+                            }
+                        }
                         console.log(decreased, 'decreased');
-                        if ($('#' + identifier.id).val() < $('#max_' + decreased).val()) {
+                        if ($('#' + identifier.id).val() < $('#max_' + decreased).val() || $('#' + identifier.id).val() > $('#max_' + decreased).val()) {
                             var increased = parseInt(identifier.id.substring(4));
                             console.log(increased, 'increased');
 
@@ -306,11 +412,16 @@
 
                             $('#' + identifier.id.substring(0, 3) + "_" + increased).empty().populate(list_1);
                             $('#max_' + increased).empty().populate(list);
+                            removed = 1;
+                            // break;
+                        } else {
+
                         }
+                        // }
                     }
                 } else {
 
-                    $('#' + identifier.id).empty().populate(list);
+                    // $('#' + identifier.id).empty().populate(list);
                 }
 
 
@@ -331,19 +442,53 @@
         // })
         function checkMyForm() {
             var disabled = 0;
-            var co = 3;
-            for (x = 3; x <= array.length - 2; x++) {
-                if (array[co + 1] != null) {
+            var co = 0;
 
-                    if (array[co] == array[co + 1]) {
+            // var arrTo = '';
+            // arrTo = array;
+
+            // function removeItemAll(arrTo, value) {
+            //     var i = 0;
+            //     while (i < arrTo.length) {
+            //         if (arrTo[i] === value) {
+            //             arrTo.splice(i, 1);
+            //         } else {
+            //             ++i;
+            //         }
+            //     }
+            //     return arrTo;
+            // }
+
+            // console.log(removeItemAll(arrTo, 0))
+
+            // let arrTo = array.map(Math.sqrt).filter((_, i) => (i == 0));
+            // console.log(arrTo, 'arrTo');
+
+            function isPositive(value) {
+                return value > 0;
+            }
+
+            function display(num) {
+                return num;
+            }
+            var values = array;
+            var filtered =
+                values.map(display).filter(isPositive);
+
+            console.log(filtered, 'filtered');
+
+            for (x = 0; x < filtered.length - 1; x++) {
+                if (filtered[co + 1] != null && filtered[co] != 0) {
+
+                    if (filtered[co] == filtered[co + 1]) {
                         // isEqual = false; 
-                        console.log(array[co], 'array[co]');
-                        console.log(array[co + 1], 'array[co + 1]');
+                        console.log(filtered[co], 'array[co]');
+                        console.log(filtered[co + 1], 'array[co + 1]');
                         // $(".UploadBtn").prop("disabled", "false");
                         co = co + 2;
-                    } else if (array[co] != array[co + 1]) {
-                        console.log(array[co], 'array[co] q');
-                        console.log(array[co + 1], 'array[co + 1] q');
+                    } else if (filtered[co] != filtered[co + 1]) {
+                        console.log(filtered[co], 'array[co] q');
+                        console.log(filtered[co + 1], 'array[co + 1] q');
                         disabled = 1;
 
                     }
@@ -356,9 +501,21 @@
             if (disabled == 1) {
                 // $(".UploadBtn").prop("disabled", "true");
                 // returnToPreviousPage();
+
+                // $('#sequence_message').toastmessage('showSuccessToast', "Please check your inputs");
+                // var x = document.getElementById("sequence_message");
+                // x.className = "show";
+                $('#sequence_message').addClass('show');
+                $('#sequence').html('');
+                $('#sequence').append('<div class="alert alert-danger"><strong>Sequence in not correct</strong></div>');
+                setTimeout(function() {
+                    // alert('Please check your inputs');
+                    // x.className = x.className.replace("show", "");
+                    $('#sequence_message').removeClass('show');
+                }, 3000);
                 return false;
-            }
-            else {
+            } else {
+                $('#sequence').html('');
                 return true;
             }
             // if(co==0){

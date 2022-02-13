@@ -67,21 +67,23 @@ class GuestController extends Controller
     public function store(Request $request)
     {
 
-        $input = $request->all();
+        dd('Ok');
 
-        $rules = [];
+        // $input = $request->all();
 
-        $i = 1;
-        foreach ($input['min'] as $key => $val) {
-            $rules['min.' . $i] = 'required';
-            $i++;
-        }
+        // $rules = [];
 
-        $validator = Validator::make($input, $rules);
+        // $i = 1;
+        // foreach ($input['min'] as $key => $val) {
+        //     $rules['min.' . $i] = 'required';
+        //     $i++;
+        // }
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->with('error', 'Sequence is not valid');
-        }
+        // $validator = Validator::make($input, $rules);
+
+        // if ($validator->fails()) {
+        //     return redirect()->back()->withErrors($validator)->with('error', 'Sequence is not valid');
+        // }
 
     }
 
