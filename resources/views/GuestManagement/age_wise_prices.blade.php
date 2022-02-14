@@ -113,17 +113,8 @@
         </div>
         @endif
 
-        <label for="">Change For Children</label>
-        <select class="form-control" name="" id="confirmation">
-            <option value="">Select</option>
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-        </select>
-
-        <br>
-
-        <button id="add_field" class="btn btn-primary hidden">+</button>
-        <form action="{{route('save')}}" method="POST" onsubmit="return checkMyForm();">
+      
+        <form action="{{route('update')}}" method="POST" onsubmit="return checkMyForm();">
             @csrf
             <div id="table">
 
@@ -143,6 +134,12 @@
         </form>
     </div>
     <script>
+        var count = 2;
+        var w = 2;
+        var w_1 = 3;
+        
+        var array = [];
+        // array.splice(0,array.length)
         toEdit();
 
         function toEdit() {
@@ -155,9 +152,17 @@
                 success: function(result) {
                     // per = 0;
                     // localStorage.setItem("per", per);
-                    console.log(result.age_wise_price);
+                    console.log(result);
 
                     $('#table').html(result.age_wise_price);
+
+                    count = result.count+1;
+                    w = result.w+2;
+                    w_1 = result.w_1+2;
+
+                    console.log(count, w, w_1);
+
+                    array = result.array;
 
                     // $("#message").append('<div class="alert alert-danger">Wait for some times</div>');
 
@@ -206,11 +211,10 @@
 
         var any = 2;
         var any_1 = 3;
-        var array = [];
+        
         var logic = 0;
-        var count = 2;
-        var w = 2;
-        var w_1 = 3;
+        
+        
         var s = 0;
         var toC = 0;
         var removed = 1;

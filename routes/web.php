@@ -39,6 +39,7 @@ Route::get('/another_info', function () {
 });
 
 Route::post('/save', 'GuestController@store')->name('save');
+Route::post('/update', 'GuestController@update')->name('update');
 
 Route::get('age_wise_prices/{id}', 'GuestController@show')->name('age_wise_prices');
 

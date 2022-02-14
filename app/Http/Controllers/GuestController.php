@@ -69,23 +69,23 @@ class GuestController extends Controller
     public function store(Request $request)
     {
 
-        
 
-        for($i = 1; $i <= count($request->get('min')); $i++){
-            if($request->get('min')[$i+1] != null){
-            $guests = new AgeWisePrice();
-            $guests->room_id = 1;
-            $guests->min = $request->get('min')[$i+1];
-            $guests->max = $request->get('max')[$i+1];
-            $guests->price = $request->get('price')[$i+1];
-            $guests->is_active = 1;
-            $guests->save();
+
+        for ($i = 1; $i <= count($request->get('min')); $i++) {
+            if ($request->get('min')[$i + 1] != null) {
+                $guests = new AgeWisePrice();
+                $guests->room_id = 1;
+                $guests->min = $request->get('min')[$i + 1];
+                $guests->max = $request->get('max')[$i + 1];
+                $guests->price = $request->get('price')[$i + 1];
+                $guests->is_active = 1;
+                $guests->save();
             }
         }
 
         dd(count($request->get('min')), $request->all());
 
-        
+
 
         // $input = $request->all();
 
@@ -118,55 +118,78 @@ class GuestController extends Controller
         $loop = '';
         $w = 2;
         $w_1 = 3;
-        $loop .= "<table><thead id='thead'><tr><td>Min. Age</td><td>Max. Age</td><td></td><td>Price</td><td></td></tr></thead><tbody>";
+        $max = 0;
+        $array = [0,0];
+        $loop .= "<div id = 'message'></div><table><thead id='thead'><tr><td>Min. Age</td><td>Max. Age</td><td></td><td>Price</td><td></td></tr></thead><tbody>";
+
         foreach ($awp as $data) {
-            
-            
+            // $increased = $count+1;
+            // $myArray->put($count, $data->min);
+            // $myArray->put($w, $data->max);
+            array_push($array, $data->min);
+            array_push($array, $data->max);
+            // $myArray = array( $count => $data->min);
+            // array_merge($array, $myArray);
+            // $myArray = array( $count+1 => $data->max);
+
+            // array_merge($array, $myArray);
+
             $loop .= "<tr><td><select name='min[$count]' data-id='$w' class = 'select optional form-control' id='min_$count' onclick='ch(this)' required>";
             $loop .= "<option value = '$data->min' selected>$data->min</option>";
+            if ($count == 2) {
+                $min = 0;
+                $max = 20;
+            } else {
+                $min = $data->min;
+            }
+            for ($i = $min; $i <= $max; $i++) {
 
-            // for (i = max; i <= max; i++) {
+                // if (i > t) {
+                //     loop += '<option value="' + i + '" hidden>' + i + '</option>';
+                // } else  {
 
-            //     // if (i > t) {
-            //     //     loop += '<option value="' + i + '" hidden>' + i + '</option>';
-            //     // } else  {
+                // loop += '<option value="' + i + '" hidden>' + i + '</option>';
+                if ($i != $data->min) {
+                    $loop .= "<option value='$i' >$i</option>";
+                }
+                // ent = ent+1; 
+                // }
+                // else{
+                //     loop += '<option value="' + i + '" selected>' + i + '</option>';
+                // }
 
-            //     // loop += '<option value="' + i + '" hidden>' + i + '</option>';
-            //     loop += '<option value="' + i + '" >' + i + '</option>';
-            //     // ent = ent+1; 
-            //     // }
-            //     // else{
-            //     //     loop += '<option value="' + i + '" selected>' + i + '</option>';
-            //     // }
-            //     break;
-            // }
+
+                if ($count != 2) {
+                    break;
+                }
+            }
 
             $loop .= "</select></td>";
 
             $loop .= "<td><select name='max[$count]' class = 'form-control' data-id='$w_1' id='max_$count' onclick='ch(this)' required>";
             $loop .= "<option value = '$data->max'>$data->max</option>";
-            // for (i = max; i <= 20; i++) {
-            //     if (i < t) {
-            //         loop += '<option value="' + i + '" hidden>' + i + '</option>';
-            //     } else {
-            //         loop += '<option value="' + i + '">' + i + '</option>';
-            //     }
-            // }
-            if($count == 2)
-            {
+            // $max = $data->max;
+            for ($i = $min; $i <= $max; $i++) {
+                // if (i < t) {
+                if ($i != $data->max) {
+                    $loop .= "<option value='$i' >$i</option>";
+                }
+                // } else {
+                //     loop += '<option value="' + i + '">' + i + '</option>';
+                // }
+            }
+            if ($count == 2) {
                 $idTo = 'add_field';
                 $onclick = 'addfield()';
                 $class = 'btn btn-success';
                 $sign = '+';
-            }
-            else{
+            } else {
                 $idTo = 'remove';
                 $onclick = '';
                 $class = 'btn btn-danger';
                 $sign = '-';
             }
-            $loop .= "</select></td><td><input class='form-control' name='price[$count]' required/></td><td>Tk</td><td><button type = 'button' id = $idTo onclick= $onclick class = $class>$sign</button></td></tr>";
-            
+            $loop .= "</select></td><td><input class='form-control' name='price[$count]' value='$data->price' required/></td><td>Tk</td><td><button type = 'button' id = '$idTo' onclick= '$onclick' class = '$class'>$sign</button></td></tr>";
 
             $count++;
             $w += 2;
@@ -175,9 +198,13 @@ class GuestController extends Controller
 
         $loop .= "</tbody><tbody id='select_field'></tbody></table>";
 
-        if(request()->ajax()){
+        if (request()->ajax()) {
             return response()->json([
-                'age_wise_price' => $loop
+                'age_wise_price' => $loop,
+                'count' => $count,
+                'w' => $w,
+                'w_1' => $w_1,
+                'array' => $array,
             ]);
         }
         return view('GuestManagement.age_wise_prices');
@@ -201,9 +228,9 @@ class GuestController extends Controller
      * @param  \App\Guest  $guest
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Guest $guest)
+    public function update(Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**
