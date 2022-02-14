@@ -113,7 +113,7 @@
         </div>
         @endif
 
-      
+
         <form action="{{route('update')}}" method="POST" onsubmit="return checkMyForm();">
             @csrf
             <div id="table">
@@ -137,15 +137,18 @@
         var count = 2;
         var w = 2;
         var w_1 = 3;
-        
+
         var array = [];
         // array.splice(0,array.length)
         toEdit();
 
         function toEdit() {
+            var url = window.location.pathname;
+            var idTo = url.substring(url.lastIndexOf('/') + 1);
+            // alert(idTo); // 234234234
             $.ajax({
                 method: "GET",
-                url: "{{ url('age_wise_prices/1') }}",
+                url: "{{ url('age_wise_prices') }}/" + idTo,
                 // data: {
                 //     room_id: 1,
                 // },
@@ -156,9 +159,9 @@
 
                     $('#table').html(result.age_wise_price);
 
-                    count = result.count+1;
-                    w = result.w+2;
-                    w_1 = result.w_1+2;
+                    count = result.count + 1;
+                    w = result.w + 2;
+                    w_1 = result.w_1 + 2;
 
                     console.log(count, w, w_1);
 
@@ -211,10 +214,10 @@
 
         var any = 2;
         var any_1 = 3;
-        
+
         var logic = 0;
-        
-        
+
+
         var s = 0;
         var toC = 0;
         var removed = 1;

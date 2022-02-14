@@ -114,6 +114,7 @@ class GuestController extends Controller
     public function show($id)
     {
         $awp = AgeWisePrice::where('room_id', $id)->get();
+        // dd($awp);
         $count = 2;
         $loop = '';
         $w = 2;
