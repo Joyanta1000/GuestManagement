@@ -164,59 +164,96 @@ integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv
 
 <body>
     <div>
-      
-            <div class="container" style="position: relative; padding: 100px;">
-            <form action="{{route('guest.store')}}" method="POST">
+
+        <div class="container" style="position: relative; padding: 100px;">
+            <form action="{{route('guest.update', $details->id)}}" method="POST">
+                @method('PUT')
                 @csrf
+               
+
                 <label for="">Adult Guest</label>
                 <select name="adult_guest" id="a_guest">
-                    <option value="0" selected>Select Number</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
+                    <option value="{{$details->adult}}" selected>{{$details->adult}}</option>
+                    @for($i=1;$i<=5;$i++) @if($i!=$details->adult)
+                        <option value="{{$i}}">{{$i}}</option>
+                        @endif
+                        @endfor
+
                 </select>
                 <label for="">Children Guest</label>
                 <select name="child_guest" id="c_guest">
-                    <option value="0" selected>Select Number</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
+                    <option value="{{$details->children}}" selected>{{$details->children}}</option>
+                    @for($i=1;$i<=5;$i++) @if($i!=$details->children)
+                        <option value="{{$i}}">{{$i}}</option>
+                        @endif
+                        @endfor
                 </select>
-                <input id="max_guest" value="5" type="hidden">
-                
-                    <span id="a_children">
+                <br>
+                <input id="max_guest" name="" value="5" type="hidden">
 
-                    </span>
-                
+                <span id="a_children">
+
+                    <div style=""><label for="">Age of Children</label>
+                    <br>
+
+                        @for($k=0;$k<count($details->childrenAgePrice);$k++)
+                            <label>Child {{$k + 1}}
+                            </label><select name="ag_guest_[{{$k}}]" id="ag_guest_{{$k}}">
+                                <option value="{{$details->childrenAgePrice[$k]->child_age}}" selected>{{$details->childrenAgePrice[$k]->child_age}}</option>
+                                @for($i=1;$i<=10;$i++)
+                                @if($i!=$details->childrenAgePrice[$k]->child_age)
+                                    <option value="{{$i}}">{{$i}}</option>
+                                    @endif
+                                    @endfor
+                                    Price: <input type="number" name="price[{{$k}}]" value="{{$details->childrenAgePrice[$k]->price}}" required><br>
+                                @endfor
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Submit">
+
+                </span>
+
                 <br>
 
                 <span id="a_g_message" style="padding-left: 20px;">
+
+                <label for="">Adult Guest = <input type="hidden" name="adult_guest" value="{{$details->adult}}" id="selected_adult_guest">{{$details->adult}}</label>
 
                 </span>
 
                 <span id="c_g_message" style="padding-left: 20px;">
 
+                <label for="">Child Guest =  <input name="child_guest" type="hidden" value="{{$details->children}}"> {{$details->children}}</label>
+
                 </span>
 
                 <span id="max" style="padding-left: 20px;">
 
+                <label for="">Maximum guest from adult = <input type="hidden" name="max" value="5">5</label>
+
                 </span>
 
                 <label id="age_of_children" style="padding-left: 20px;">
+
+                @php
+
+                $a = [];
+                for($i=0;$i<count($details->childrenAgePrice);$i++){
+                    array_push($a,$details->childrenAgePrice[$i]->child_age);
+                }
+                @endphp
+
+                <!-- Age of Children = [{{implode(',',$a)}}] -->
 
                 </label>
 
                 <div id="output">
 
                 </div>
-</form>
-            </div>
+              
+            </form>
+        </div>
 
-    
+
     </div>
 </body>
 
@@ -226,8 +263,29 @@ integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script>
-    $(document).ready(function() {
-        var a = [];
+    var a = [];
+
+    // console.log(JSON.parse("{{ json_encode($a) }}"));
+
+     var jobs = JSON.parse("{{ json_encode($a) }}");
+
+    console.log(jobs.length);
+
+    for(var i = 0; i < jobs.length; i++) {
+        // console.log(jobs[i]);
+        a.push(jobs[i]);
+    }
+
+    console.log(a);
+
+    $('#age_of_children').append('<input type="hidden" name="age_of" id="ageArray" value="' + a +
+                '">Age of Children  = [' + a + ']');
+            localStorage.setItem("age_of", a);
+
+            ageOfGuest(jobs.length);
+
+    // $(document).ready(function() {
+        
 
         $('#a_guest').change(function() {
             var a_guest = $('#a_guest').val();
@@ -265,13 +323,13 @@ integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv
             $('#a_children').html('');
             if (c_guest != 0) {
                 $('#a_children').append(
-                    '<div style: "position:absolute; right: 20px;"><label for="">Age of Children</label>'
+                    '<div style= ""><label for="">Age of Children</label>'
                 );
                 for (var i = 0; i < c_guest; i++) {
                     $('#a_children').append('<label>Child ' + (i + 1) +
                         '</label><select name="ag_guest_[' + i +
                         ']" id="ag_guest_' + i +
-                        '"><option value="0" selected>Select Age</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select> Price: <input type="number" name="price['+i+']"><br></div>'
+                        '"><option value="0" selected>Select Age</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select> Price: <input type="number" name="price[' + i + ']" required><br></div>'
                     );
                 }
 
@@ -280,15 +338,17 @@ integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv
                 );
             }
         });
-        let c_guest = 0;
+        let c_guest = jobs.length ? jobs.length : 0;
         $('#c_guest').change(function() {
             this.c_guest = $('#c_guest').val();
             ageOfGuest(this.c_guest);
         });
 
         function ageOfGuest(c_guest) {
+            // alert(c_guest);
             for (var i = 0; i < c_guest; i++) {
                 $('#ag_guest_' + i).change(function() {
+                    // alert(this.value);
                     var id = this.id;
                     a.splice(id.slice(9), 1, document.getElementById(this.id).value);
                     age(a);
@@ -321,7 +381,9 @@ integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv
 
         }
 
-    });
+    // });
+
+
 </script>
 
 <script>

@@ -11,8 +11,38 @@
 |
 */
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+
+Route::get('reboot', function () {
+    Artisan::call('cache:clear');
+    Artisan::call('view:clear');
+    Artisan::call('route:clear');
+    Artisan::call('config:clear');
+    Artisan::call('config:cache');
+    dd('Done');
+});
+
+Route::get('storageLink', function () {
+    Artisan::call('storage:link');
+    dd('Done');
+});
+
+Route::get('migrate', function () {
+    Artisan::call('migrate');
+    dd('Done');
+});
+
+Route::get('seed', function () {
+    Artisan::call('db:seed');
+    dd('Done');
+});
+
+Route::get('migrate_fresh_seed', function () {
+    Artisan::call('migrate:fresh --seed');
+    dd('Done');
+});
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,6 +51,10 @@ Route::get('/', function () {
 Route::get('/guest_management', function () {
     return view('GuestManagement.index');
 });
+
+Route::resource('/guest', 'GuestManagement');
+
+Route::get('/guest/edit/{id}', 'GuestManagement@edit')->name('guest.edit');
 
 Route::get('/pass_guests_info', 'GuestController@pass_guests_info')->name('pass_guests_info');
 
