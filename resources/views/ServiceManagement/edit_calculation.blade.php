@@ -9,15 +9,15 @@
 </head>
 
 <body style="padding: 100px;">
-    <form action="{{route('calculation.store')}}" method="POST">
+    <form action="{{route('calculation.update', $details->id)}}" method="POST">
 
-        @method('POST')
+        @method('PUT')
         @csrf
         <h1></h1>
         <table>
             <tbody>
                 <tr>
-                    <td><input type="text" name="given" id="total" onclick="fun(1)" class="form-control" placeholder="Total"></td>
+                    <td><input type="text" id="total" name="given" onclick="fun(1)" class="form-control" value="{{$details->additionalCost->first()->given}}" placeholder="Total"></td>
                 </tr>
             </tbody>
         </table>
@@ -30,28 +30,45 @@
                 <th>Action</th>
             </thead>
 
-
-
             <tbody id="row">
-                <tr>
+                @foreach ($details->additionalCost as $key => $value)
+                <tr id="tr_{{$key}}">
                     <td>
-                        <select name="op_type[]" onclick="fun(0)" id="operation_0" class="form-control">
-                            <option value="0" selected>Select Operation</option>
-                            <option value="1">Add</option>
-                            <option value="2">Subtract</option>
+                        <select name="op_type[]" onclick="fun(0)" id="operation_{{$key}}" class="form-control">
+
+                            <option value="{{$value->op_type}}" selected>{{$value->op_type == 1 ? 'Add' : 'Subtract'}}</option>
+                            <option value="1" class="" {{$value->op_type == 1 ? 'hidden' : ''}}>Add</option>
+                            <option value="2" class="" {{$value->op_type == 2 ? 'hidden' : ''}}>Subtract</option>
                         </select>
                     </td>
                     <td>
-                        <input type="text" name="amount[]" id="c_a_0" onkeyup="fun(0)" class="form-control" placeholder="Cost/Addition">
+                        <input type="text" name="amount[]" id="c_a_{{$key}}" onkeyup="fun(0)" class="form-control" placeholder="Cost/Addition" value="{{$value->amount}}">
                     </td>
                     <td>
-                        <input type="text" name="comment[]" id="comment_1" class="form-control" placeholder="Comment">
+                        <input type="text" name="comment[]" id="comment_{{$key}}" class="form-control" value="{{$value->comment}}" placeholder="Comment" required>
                     </td>
                     <td>
-                        <button type="button" id="addMore" class="btn btn-success">+</button>
+                        <button type="button" id="{{$key == 0 ? 'addMore' : 'remove' }}" class="btn btn-{{$key == 0 ? 'success' : 'danger' }}">{{$key == 0 ? '+' : '-' }}</button>
                     </td>
                 </tr>
+                @endforeach
             </tbody>
+
+            @php
+
+
+
+
+            $arr = [];
+            for($i=0;$i<count($details->additionalCost);$i++){
+
+                $array=array("id"=>"c_a_$i", "c_a"=>"{$details->additionalCost[$i]->amount}", "operation"=>"{$details->additionalCost[$i]->op_type}");
+
+                array_push($arr,$array);
+                }
+                @endphp
+
+
 
 
         </table>
@@ -75,16 +92,44 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script type="text/javascript">
-        var arr = new Array();
-        var obj = {};
-        var initialize = 0;
+        // var arr = new Array();
+        var encoded = '<?php echo json_encode($arr); ?>';
+        var arr = JSON.parse(encoded);
+        // var obj = {};
+        console.log(arr, 'to edit');
+
+        setTimeout(function() {
+            $.ajax({
+                method: "GET",
+                url: "{{ url('showFields') }}",
+                data: {
+                    total: $('#total').val(),
+                    info: arr,
+                },
+                success: function(result) {
+                    console.log(result);
+                    per = 0;
+                    localStorage.setItem("per", per);
+                    // $("#message").append('<div class="alert alert-danger">Wait for some times</div>');
+
+                    $("#another_total").html(result);
+                    // $("#message").html('');
+                }
+            });
+        }, 1000);
+
+
+
+
+        var initialize = JSON.parse("{{ json_encode($i) }}") ? parseInt(JSON.parse("{{ json_encode($i) }}"))-1 : 0;
+        console.log(initialize, 'initialize');
         var init = 0;
-        obj = {
-            id: null,
-            c_a: 0,
-            operation: 0,
-        };
-        arr.push(obj);
+        // obj = {
+        //     id: null,
+        //     c_a: 0,
+        //     operation: 0,
+        // };
+        // arr.push(obj);
         $("#addMore").click(function() {
             obj = {
                 id: null,
@@ -98,7 +143,7 @@
             html += '<tr id = "tr_' + initialize + '">';
             html += '<td><select name="op_type[]" id="operation_' + initialize + '" class="form-control"><option value="0" selected>Select Operation</option><option value="1">Add</option><option value="2">Subtract</option></select></td>';
             html += '<td><input type="text" name="amount[]" id="c_a_' + initialize + '" class="form-control" placeholder="Cost/Addition"></td>';
-            html += '<td><input type="text" name="comment[]" id="comment_' + initialize + '" class="form-control" placeholder="Comment"></td>';
+            html += '<td><input type="text" name="comment[]" id="comment_' + initialize + '" class="form-control" placeholder="Comment" required></td>';
             html += '<td><button id="remove" class="btn btn-danger">-</button></td></tr>';
 
             $('#row').append(html);

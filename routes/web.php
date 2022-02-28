@@ -54,6 +54,10 @@ Route::get('/guest_management', function () {
 
 Route::resource('/guest', 'GuestManagement');
 
+Route::resource('/calculation', 'CalculationController')->only([
+    'index', 'create', 'store', 'update', 'edit', 'destroy',
+]);
+
 Route::get('/guest/edit/{id}', 'GuestManagement@edit')->name('guest.edit');
 
 Route::get('/pass_guests_info', 'GuestController@pass_guests_info')->name('pass_guests_info');

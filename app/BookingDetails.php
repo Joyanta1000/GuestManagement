@@ -16,4 +16,9 @@ class BookingDetails extends Model
     {
         return $this->hasMany('App\ChildrenAgePrice', 'booking_details_id');
     }
+
+    public function additionalCost()
+    {
+        return $this->hasMany('App\AdditionalCost', 'booking_details_id');
+    }
 }
