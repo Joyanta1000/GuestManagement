@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 27, 2022 at 11:48 AM
+-- Generation Time: Feb 28, 2022 at 09:40 AM
 -- Server version: 5.7.33
 -- PHP Version: 7.4.19
 
@@ -20,6 +20,46 @@ SET time_zone = "+00:00";
 --
 -- Database: `guest_management`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `additional_costs`
+--
+
+CREATE TABLE `additional_costs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `booking_details_id` bigint(20) UNSIGNED NOT NULL,
+  `op_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `amount` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `given` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `comment` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `additional_costs`
+--
+
+INSERT INTO `additional_costs` (`id`, `booking_details_id`, `op_type`, `amount`, `given`, `comment`, `created_at`, `updated_at`) VALUES
+(14, 1, '1', '200', '200', 'a', '2022-02-28 03:38:52', '2022-02-28 03:38:52'),
+(15, 1, '1', '100', '200', 'g', '2022-02-28 03:38:52', '2022-02-28 03:38:52'),
+(16, 1, '1', '100', '200', 'h', '2022-02-28 03:38:52', '2022-02-28 03:38:52'),
+(17, 1, '2', '300', '200', 'i', '2022-02-28 03:38:52', '2022-02-28 03:38:52'),
+(18, 1, '1', '1000', '200', 'j', '2022-02-28 03:38:52', '2022-02-28 03:38:52');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `addition_costs`
+--
+
+CREATE TABLE `addition_costs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -187,7 +227,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (7, '2022_01_29_092755_create_ages_table', 1),
 (8, '2022_02_13_110824_create_age_wise_prices_table', 1),
 (9, '2022_02_27_071928_create_booking_details_table', 1),
-(10, '2022_02_27_071954_create_children_age_prices_table', 1);
+(10, '2022_02_27_071954_create_children_age_prices_table', 1),
+(11, '2022_02_28_061042_create_addition_costs_table', 2),
+(14, '2022_02_28_061057_create_additional_costs_table', 3);
 
 -- --------------------------------------------------------
 
@@ -247,6 +289,19 @@ CREATE TABLE `users` (
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `additional_costs`
+--
+ALTER TABLE `additional_costs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `additional_costs_booking_details_id_foreign` (`booking_details_id`);
+
+--
+-- Indexes for table `addition_costs`
+--
+ALTER TABLE `addition_costs`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `ages`
@@ -324,6 +379,18 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `additional_costs`
+--
+ALTER TABLE `additional_costs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT for table `addition_costs`
+--
+ALTER TABLE `addition_costs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `ages`
 --
 ALTER TABLE `ages`
@@ -369,7 +436,7 @@ ALTER TABLE `guest_types`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `settings`
@@ -386,6 +453,12 @@ ALTER TABLE `users`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `additional_costs`
+--
+ALTER TABLE `additional_costs`
+  ADD CONSTRAINT `additional_costs_booking_details_id_foreign` FOREIGN KEY (`booking_details_id`) REFERENCES `booking_details` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `ages`
