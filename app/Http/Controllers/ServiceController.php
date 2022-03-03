@@ -66,6 +66,37 @@ class ServiceController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+    // public function showFields()
+    // {
+    //     // $info = collect( [request()->get('info') ] )->map(function ($array) {
+    //     //     return collect($array)->unique('id')->all();
+    //     // });
+    //     // $total = request()->get('total');
+
+    //     $info = request()->get('info');
+    //     $total = request()->get('total');
+
+
+    //     $total_output = $total ? $total : 0;
+    //     for ($i = 0; $i < count($info); $i++) {
+    //         $operation = $info[$i]['operation'] ? $info[$i]['operation'] : 0;
+    //         $c_a = $info[$i]['c_a'] ? $info[$i]['c_a'] : 0;
+    //         if ($operation == 1 && $c_a != 0) {
+    //             $total = $total + $c_a;
+    //         }
+    //         if ($operation == 2 && $c_a != 0) {
+    //             $total = $total - $c_a;
+    //         }
+    //         if ($operation == 1 || $operation == 2) {
+    //             if ($c_a != 0) {
+    //                 $total_output = $total;
+    //             }
+    //         }
+    //     }
+    //     //  echo response()->json(['count' => count(request()->get('info')) , 'info' => request()->get('info')]);
+    //     echo "<tr><td><input type='text' id='total_another' class='form-control' placeholder='Total' value='$total_output'></td></tr>";
+    // }
+
     public function showFields()
     {
         // $info = collect( [request()->get('info') ] )->map(function ($array) {
@@ -96,6 +127,7 @@ class ServiceController extends Controller
         //  echo response()->json(['count' => count(request()->get('info')) , 'info' => request()->get('info')]);
         echo "<tr><td><input type='text' id='total_another' class='form-control' placeholder='Total' value='$total_output'></td></tr>";
     }
+    
 
     public function showSelectFields(){
         $output = "";
@@ -104,7 +136,7 @@ class ServiceController extends Controller
             $output .= "<table><thead id='thead'><tr><td>Min. Age</td><td>Max. Age</td><td></td><td>Price</td><td></td></tr></thead><div id='message'></div>";
             $output .= "<tr ><td><select name='min[2]' data-id='2' class = 'select optional form-control' id='min_2' onclick='ch(this)' required>";
             $output .= "<option value = '' >Select</option>";
-            for($i = 0; $i <= 20; $i++){
+            for($i = 0; $i <= 0; $i++){
                 $output .= "<option value='$i'>$i</option>";
             }
             $output .= "</select></td>";

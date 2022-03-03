@@ -135,7 +135,9 @@ class GuestController extends Controller
 
             // array_merge($array, $myArray);
 
-            $loop .= "<tr><td><select name='min[$count]' data-id='$w' class = 'select optional form-control' id='min_$count' onclick='ch(this)' required>";
+            
+
+            $loop .= "<tr ><td><select name='min[$count]' data-id='$w' class = 'select optional form-control' id='min_$count' onclick='ch(this)' required>";
             $loop .= "<option value = '$data->min' selected>$data->min</option>";
             if ($count == 2) {
                 $min = 0;
@@ -152,7 +154,9 @@ class GuestController extends Controller
                 // loop += '<option value="' + i + '" hidden>' + i + '</option>';
                 if ($i != $data->min) {
                     $loop .= "<option value='$i' >$i</option>";
+                    
                 }
+                break;
                 // ent = ent+1; 
                 // }
                 // else{
@@ -210,7 +214,6 @@ class GuestController extends Controller
         }
         return view('GuestManagement.age_wise_prices');
     }
-
     /**
      * Show the form for editing the specified resource.
      *

@@ -310,7 +310,7 @@
 
             if ($('#min_' + identifier.id.substring(4)).val() > $('#max_' + decreased_1).val()) {
                 $('#message').empty();
-                
+
                 $('#min_' + identifier.id.substring(4)).empty().populate(list)
                 $('#message').append('<label style="color: red;">Select Same As Previous Max Age</label>');
             } else {
@@ -353,8 +353,15 @@
                         })));
                     };
                 })(jQuery);
-
+                list.push('');
+                var g_h = 0;
                 for (i = max; i <= 20; i++) {
+                    if (g_h == 0) {
+                        i++;
+                        g_h++;
+                    }
+
+                    console.log(i, 'i');
                     list.push(i);
                 }
 
@@ -366,8 +373,9 @@
                         })));
                     };
                 })(jQuery);
-
+                list_1.push('');
                 for (i = max; i <= max; i++) {
+
                     list_1.push(i);
                 }
 
@@ -403,11 +411,23 @@
 
                             var list = [];
                             var list_1 = [];
+
+                            list.push('');
+
+                            g_h = 0;
+
                             for (i = $('#max_' + decreased).val(); i <= 20; i++) {
+                                if (g_h == 0) {
+                                    i++;
+                                    g_h++;
+                                }
                                 list.push(i);
                             }
 
+                            list_1.push('');
+
                             for (i = $('#max_' + decreased).val(); i <= $('#max_' + decreased).val(); i++) {
+
                                 list_1.push(i);
                             }
 

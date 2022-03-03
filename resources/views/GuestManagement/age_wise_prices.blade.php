@@ -116,6 +116,9 @@
 
         <form action="{{route('update')}}" method="POST" onsubmit="return checkMyForm();">
             @csrf
+
+            <label for=''>Change For Children</label><select class='confirmationToEdit form-control' name='' id='confirmationToEdit'><option value=''>Select</option><option value='0'>No</option><option value='1'>Yes</option></select> <br>
+
             <div id="table">
 
             </div>
@@ -139,12 +142,34 @@
         var w_1 = 3;
 
         var array = [];
-        // array.splice(0,array.length)
-        toEdit();
-
-        function toEdit() {
-            var url = window.location.pathname;
+        var addedField = 1;
+        var url = window.location.pathname;
             var idTo = url.substring(url.lastIndexOf('/') + 1);
+
+        // array.splice(0,array.length)
+        toEdit(url, idTo);
+
+        // console.log(document.getElementById('confirmation').value);
+
+        
+
+        $('#confirmationToEdit').change(function() {
+            
+            if ($(this).val() == 0)
+            {
+                $('#table').html('');
+            }
+            else{
+                // $('#table').html('');
+                // alert('yes');
+                toEdit(url, idTo);
+            }
+        });
+
+        
+
+        function toEdit(url, idTo) {
+            
             // alert(idTo); // 234234234
             $.ajax({
                 method: "GET",
@@ -156,10 +181,13 @@
                     // per = 0;
                     // localStorage.setItem("per", per);
                     console.log(result);
+                    $('#table').html('');
 
                     $('#table').html(result.age_wise_price);
 
                     count = result.count + 1;
+                    console.log(count, "count");
+                    addedField = result.count-3;
                     w = result.w + 2;
                     w_1 = result.w_1 + 2;
 
@@ -171,46 +199,47 @@
 
                     // $("#another_total").html(result);
                     // $("#message").html('');
+                    
                 }
             });
         }
 
-        $('#confirmation').change(function() {
-            var open = 0;
-            // if ($(this).val() == 1) {
-            s = 1;
-            open = 1;
-            addField(s);
-            $.ajax({
-                method: "GET",
-                url: "{{ url('showSelectFields') }}",
-                data: {
-                    open: $(this).val(),
-                },
-                success: function(result) {
-                    // per = 0;
-                    // localStorage.setItem("per", per);
-                    console.log(result);
+        // $('#confirmation').change(function() {
+        //     var open = 0;
+        //     // if ($(this).val() == 1) {
+        //     s = 1;
+        //     open = 1;
+        //     addField(s);
+        //     $.ajax({
+        //         method: "GET",
+        //         url: "{{ url('showSelectFields') }}",
+        //         data: {
+        //             open: $(this).val(),
+        //         },
+        //         success: function(result) {
+        //             // per = 0;
+        //             // localStorage.setItem("per", per);
+        //             console.log(result);
 
-                    $('#table').html(JSON.stringify(result));
+        //             $('#table').html(JSON.stringify(result));
 
-                    // $("#message").append('<div class="alert alert-danger">Wait for some times</div>');
+        //             // $("#message").append('<div class="alert alert-danger">Wait for some times</div>');
 
-                    // $("#another_total").html(result);
-                    // $("#message").html('');
-                }
-            });
-            // $('#add_field').removeClass('hidden');
-            // $('#thead').html('');
-            // $('#thead').append('<tr><td>Min. Age</td><td>Max. Age</td><td></td><td>Price</td><td></td></tr>');
+        //             // $("#another_total").html(result);
+        //             // $("#message").html('');
+        //         }
+        //     });
+        //     // $('#add_field').removeClass('hidden');
+        //     // $('#thead').html('');
+        //     // $('#thead').append('<tr><td>Min. Age</td><td>Max. Age</td><td></td><td>Price</td><td></td></tr>');
 
-            // } else if ($(this).val() == 0) {
-            // $('#add_field').addClass('hidden');
-            // $('#select_field').html('');
-            // $('#thead').html('');
-            // $('#add_btn').addClass('hidden');
-            // }
-        });
+        //     // } else if ($(this).val() == 0) {
+        //     // $('#add_field').addClass('hidden');
+        //     // $('#select_field').html('');
+        //     // $('#thead').html('');
+        //     // $('#add_btn').addClass('hidden');
+        //     // }
+        // });
 
         var any = 2;
         var any_1 = 3;
@@ -221,7 +250,7 @@
         var s = 0;
         var toC = 0;
         var removed = 1;
-        var addedField = 1;
+       
 
         var ent = 1;
 
@@ -382,7 +411,15 @@
                     };
                 })(jQuery);
 
+                list.push('');
+
+                var g_h = 0;
+
                 for (i = max; i <= 20; i++) {
+                    if (g_h == 0) {
+                        i++;
+                        g_h++;
+                    }
                     list.push(i);
                 }
 
@@ -395,6 +432,7 @@
                     };
                 })(jQuery);
 
+                list_1.push('');
                 for (i = max; i <= max; i++) {
                     list_1.push(i);
                 }
@@ -410,6 +448,7 @@
                         // for (u = 1; u <= removed; u++) {
                         var decreased = parseInt(identifier.id.substring(4)) - 1;
                         console.log(decreased, '1st decreased', removed, 'removed to');
+                        console.log(addedField, 'addedField');
                         for (i = 1; i <= addedField; i++) {
                             var decreased = parseInt(identifier.id.substring(4)) - i;
                             console.log(decreased, '2nd decreased');
@@ -424,17 +463,23 @@
                                 break;
                             }
                         }
-                        console.log(decreased, 'decreased');
+                        console.log(decreased, 'decreased y');
                         if ($('#' + identifier.id).val() < $('#max_' + decreased).val() || $('#' + identifier.id).val() > $('#max_' + decreased).val()) {
                             var increased = parseInt(identifier.id.substring(4));
                             console.log(increased, 'increased');
 
                             var list = [];
                             var list_1 = [];
+                            list.push('');
+                            g_h = 0;
                             for (i = $('#max_' + decreased).val(); i <= 20; i++) {
+                                if (g_h == 0) {
+                                    i++;
+                                    g_h++;
+                                }
                                 list.push(i);
                             }
-
+                            list_1.push('');
                             for (i = $('#max_' + decreased).val(); i <= $('#max_' + decreased).val(); i++) {
                                 list_1.push(i);
                             }
