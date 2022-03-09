@@ -76,7 +76,8 @@ Route::get('/another_info', function () {
     return view('GuestManagement.another_info');
 });
 
-Route::post('/save', 'GuestController@store')->name('save');
+Route::post('/details/save', 'GuestController@store')->name('details.save');
+// Route::get('/details/back', 'GuestController@afterFailingToStore')->name('details.back');
 Route::post('/update', 'GuestController@update')->name('update');
 
 Route::get('age_wise_prices/{id}', 'GuestController@show')->name('age_wise_prices');

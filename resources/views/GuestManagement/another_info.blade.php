@@ -113,19 +113,26 @@
         </div>
         @endif
 
-        <label for="">Change For Children</label>
-        <select class="form-control" name="" id="confirmation">
-            <option value="">Select</option>
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-        </select>
 
-        <br>
+        
+
 
         <button id="add_field" class="btn btn-primary hidden">+</button>
-        <form action="{{route('save')}}" method="POST" onsubmit="return checkMyForm();">
+        <form action="{{route('details.save')}}" method="POST" onsubmit="return checkMyForm();">
             @csrf
+            <label for="">Change For Children</label>
+            <select name="select" class="form-control" name="" id="confirmation" value="{{old('select')}}">
+                <option value="">Select</option>
+                <option value="0" {{ old('select') == 0 ? 'selected' : '' }}>No</option>
+
+                <option value="1" {{ old('select') == 1 ? 'selected' : '' }}>Yes</option>
+
+            </select>
+            <br>
+            <input type="text" class="form-control" name="toErrorCheck" placeholder="To Error Check" readonly>
             <div id="table">
+
+            
 
             </div>
 
@@ -146,7 +153,26 @@
         </form>
     </div>
     <script>
-        var limit = 0;
+
+
+        // console.log( {{session('output')}});
+
+        var outputAfterValidation = <?php echo json_encode(session('output')); ?>;
+        var arrayAfterValidation = <?php echo json_encode(session('array')); ?>;
+        var limitAfterValidation = <?php echo json_encode(session('limit')); ?>;
+        var data_id_1AfterValidation = <?php echo json_encode(session('data_id_1')); ?>;
+        var data_id_2AfterValidation = <?php echo json_encode(session('data_id_2')); ?>;
+        var countAfterValidation = <?php echo json_encode(session('count')); ?>;
+
+
+
+        
+        // var arr = JSON.parse(encoded);
+        console.log(outputAfterValidation, arrayAfterValidation, limitAfterValidation, data_id_1AfterValidation, data_id_2AfterValidation, countAfterValidation);
+
+        $('#table').html(outputAfterValidation);
+        var limit = limitAfterValidation ? limitAfterValidation : 0;
+        console.log(limit, 'limitAfterValidation');
         $('#confirmation').change(function() {
             var open = 0;
             // if ($(this).val() == 1) {
@@ -191,17 +217,32 @@
 
         var any = 2;
         var any_1 = 3;
-        var array = [];
+        var array = arrayAfterValidation ? arrayAfterValidation : [];
         var logic = 0;
-        var count = 2;
-        var w = 2;
-        var w_1 = 3;
+        var count = countAfterValidation ? countAfterValidation : 2;
+        var w = data_id_1AfterValidation ? data_id_1AfterValidation : 2;
+        var w_1 = data_id_2AfterValidation ? data_id_2AfterValidation : 3;
         var s = 0;
         var toC = 0;
         var removed = 1;
-        var addedField = 1;
+        var addedField = countAfterValidation ? countAfterValidation - 1 : 1;
 
         var ent = 1;
+
+
+
+
+        // after validation error
+
+
+
+
+
+        // after validation error
+
+
+
+
 
         function addfield() {
             // alert('hello');

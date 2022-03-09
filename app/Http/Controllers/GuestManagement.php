@@ -16,7 +16,7 @@ class GuestManagement extends Controller
      */
     public function index()
     {
-        dd('hey');
+      
     }
 
     /**
@@ -39,11 +39,10 @@ class GuestManagement extends Controller
     {
         // dd($request->all());
 
+        
+
         $book = BookingDetails::create([
             'checkin' => Date::parse(Date::now())->format('Y-m-d'),
-            'checkout' => Date::parse(Date::now())->format('Y-m-d'),
-            'adult' => $request->adult_guest,
-            'children' => $request->child_guest,
         ]);
 
         foreach ($request->ag_guest_ as $key => $value) {

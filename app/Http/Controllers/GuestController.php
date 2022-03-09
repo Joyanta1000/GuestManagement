@@ -18,6 +18,15 @@ class GuestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     private $output;
+     private $limit;
+     private $count;
+     private $data_id_1;
+     private $data_id_2;
+     private $array;
+    private $validator;
+
     public function index()
     {
         //
@@ -69,6 +78,94 @@ class GuestController extends Controller
     public function store(Request $request)
     {
 
+        // validate the data
+
+        $this->validator = Validator::make($request->all(), [
+            'toErrorCheck' => 'required'
+        ]);
+
+        if ($this->validator->fails()) {
+
+            // dd($request->get('max')[2]);
+
+            $output = "";
+            $limit = 25;
+
+            $count = 2;
+            $data_id_1 = 2;
+            $data_id_2 = 3;
+            $array = [0, 0];
+
+            $max = [];
+            $price = [];
+
+            $output .= "<table><thead id='thead'><tr><td>Min. Age</td><td>Max. Age</td><td></td><td>Price</td><td></td></tr></thead><div id='message'></div>";
+
+                foreach ($request->get('min') as $key => $value) {
+                    // if ($key == $i) {
+                    //     $array[0] = $value;
+                    // }
+                    // dd($request->get('max')[$key]);
+                     $max[$key] = $request->get('max')[$key];
+                     $price[$key] = $request->get('price')[$key];
+
+                array_push($array, $value);
+                array_push($array, $request->get('max')[$key]);
+
+                
+                $output .= "<tr ><td><select name='min[$count]' data-id='$data_id_1' class = 'select optional form-control' id='min_$count' onclick='ch(this)' required>";
+                $output .= "<option value = '$value' >$value</option>";
+                // for ($i = 0; $i <= 0; $i++) {
+                    // $output .= "<option value='$value '>$value</option>";
+                // }
+                $output .= "</select></td>";
+                $output .= "<td><select name='max[$count]' class = 'form-control' data-id='$data_id_2' id='max_$count' onclick='ch(this)' required>";
+                $output .= "<option value = '$max[$key]'>$max[$key]</option>";
+                for ($i = 1; $i <= $limit; $i++) {
+                    $output .= "<option value='$i' >$i</option>";
+                }
+
+                $id = $count == 2 ? 'add_field': 'remove';
+                $onclick = $count == 2 ? 'addfield()' : '';
+                $class = $count == 2 ? 'success': 'danger';
+                $plusMinus = $count == 2 ? '+': '-';
+
+                // if($count == 2){
+
+                    $output .= "</select></td><td><input class='form-control' name='price[$count]' value='$price[$key]' required/></td><td>Tk</td><td><a id = '$id' onclick='$onclick' class = 'btn btn-$class'>$plusMinus</a></td></tr>";
+
+                // }
+
+                
+                
+
+                $count++;
+                $data_id_1 += 2;
+                $data_id_2 += 2;
+            }
+
+            $output .= "<tbody id='select_field'></tbody></table>";
+
+            // $this.afterFailingToStore($output);
+            $this->output = $output;
+            $this->array = $array;
+
+            $this->limit = $limit;
+            $this->count = $count;
+            $this->data_id_1 = $data_id_1;
+            $this->data_id_2 = $data_id_2;
+            return $this->afterFailingToStore();
+
+            // function calling from one function
+
+            // return response()->json(['output' => $output, 'limit' => $limit]);
+
+            // return redirect()->back()
+            //     ->withInput()
+            //     ->withErrors($validator);
+            // return response()->json(['errors' => $validator->errors()], 422);
+        }
+
 
 
         for ($i = 1; $i <= count($request->get('min')); $i++) {
@@ -86,22 +183,21 @@ class GuestController extends Controller
         dd(count($request->get('min')), $request->all());
 
 
+    }
 
-        // $input = $request->all();
+    public function afterFailingToStore()
+    {
+        // dd($this->output, $this->limit, $this->count, $this->data_id_1, $this->data_id_2, $this->array);
 
-        // $rules = [];
-
-        // $i = 1;
-        // foreach ($input['min'] as $key => $val) {
-        //     $rules['min.' . $i] = 'required';
-        //     $i++;
+        return redirect()->back()
+                ->withInput()
+                ->withErrors($this->validator)
+                ->with(['output' => $this->output , 'array' => $this->array, 'count' => $this->count, 'limit' => $this->limit, 'data_id_1' => $this->data_id_1, 'data_id_2' => $this->data_id_2]);
+        // if (request()->ajax()) {
+  
+            // return response()->json(['output' => $this->output , 'array' => $this->array, 'count' => $this->count, 'limit' => $this->limit, 'data_id_1' => $this->data_id_1, 'data_id_2' => $this->data_id_2]);
         // }
-
-        // $validator = Validator::make($input, $rules);
-
-        // if ($validator->fails()) {
-        //     return redirect()->back()->withErrors($validator)->with('error', 'Sequence is not valid');
-        // }
+        
 
     }
 
@@ -120,7 +216,7 @@ class GuestController extends Controller
         $w = 2;
         $w_1 = 3;
         $max = 0;
-        $array = [0,0];
+        $array = [0, 0];
         $loop .= "<div id = 'message'></div><table><thead id='thead'><tr><td>Min. Age</td><td>Max. Age</td><td></td><td>Price</td><td></td></tr></thead><tbody>";
 
         foreach ($awp as $data) {
@@ -135,7 +231,7 @@ class GuestController extends Controller
 
             // array_merge($array, $myArray);
 
-            
+
 
             $loop .= "<tr ><td><select name='min[$count]' data-id='$w' class = 'select optional form-control' id='min_$count' onclick='ch(this)' required>";
             $loop .= "<option value = '$data->min' selected>$data->min</option>";
@@ -154,7 +250,6 @@ class GuestController extends Controller
                 // loop += '<option value="' + i + '" hidden>' + i + '</option>';
                 if ($i != $data->min) {
                     $loop .= "<option value='$i' >$i</option>";
-                    
                 }
                 break;
                 // ent = ent+1; 

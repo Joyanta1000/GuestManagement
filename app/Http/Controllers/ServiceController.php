@@ -135,13 +135,13 @@ class ServiceController extends Controller
         if(request()->get('open') == 1)
         {
             $output .= "<table><thead id='thead'><tr><td>Min. Age</td><td>Max. Age</td><td></td><td>Price</td><td></td></tr></thead><div id='message'></div>";
-            $output .= "<tr ><td><select name='min[2]' data-id='2' class = 'select optional form-control' id='min_2' onclick='ch(this)' required>";
+            $output .= "<tr ><td><select name='min[2]' data-id='2' class = 'select optional form-control' id='min_2' onclick='ch(this)' value='{{old('min[2]')}}' required>";
             $output .= "<option value = '' >Select</option>";
             for($i = 0; $i <= 0; $i++){
                 $output .= "<option value='$i'>$i</option>";
             }
             $output .= "</select></td>";
-            $output .= "<td><select name='max[2]' class = 'form-control' data-id='3' id='max_2' onclick='ch(this)' required>";
+            $output .= "<td><select name='max[2]' class = 'form-control' data-id='3' id='max_2' onclick='ch(this)' value='{{old('max[2]')}}' required>";
             $output .= "<option value = ''>Select</option>";
             for($i = 1; $i <= $limit; $i++){
                 $output .= "<option value='$i'>$i</option>";
