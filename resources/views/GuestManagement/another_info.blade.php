@@ -146,6 +146,7 @@
         </form>
     </div>
     <script>
+        var limit = 0;
         $('#confirmation').change(function() {
             var open = 0;
             // if ($(this).val() == 1) {
@@ -161,9 +162,14 @@
                 success: function(result) {
                     // per = 0;
                     // localStorage.setItem("per", per);
-                    console.log(result);
+                    console.log(result.output, result.limit);
 
-                    $('#table').html(JSON.stringify(result));
+                    this.limit = result.limit;
+                    limit = this.limit;
+
+                    $('#table').html('');
+
+                    $('#table').html(result.output);
 
                     // $("#message").append('<div class="alert alert-danger">Wait for some times</div>');
 
@@ -250,7 +256,7 @@
 
             loop += '<td><select name="max[' + count + ']" class = "form-control" data-id="' + w_1 + '" id="max_' + count + '" onclick="ch(this)" required>';
             loop += '<option value = "0">Select</option>';
-            for (i = max; i <= 20; i++) {
+            for (i = max; i <= limit; i++) {
                 if (i < t) {
                     loop += '<option value="' + i + '" hidden>' + i + '</option>';
                 } else {
@@ -355,7 +361,7 @@
                 })(jQuery);
                 list.push('');
                 var g_h = 0;
-                for (i = max; i <= 20; i++) {
+                for (i = max; i <= limit; i++) {
                     if (g_h == 0) {
                         i++;
                         g_h++;
@@ -416,7 +422,7 @@
 
                             g_h = 0;
 
-                            for (i = $('#max_' + decreased).val(); i <= 20; i++) {
+                            for (i = $('#max_' + decreased).val(); i <= limit; i++) {
                                 if (g_h == 0) {
                                     i++;
                                     g_h++;

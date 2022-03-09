@@ -131,6 +131,7 @@ class ServiceController extends Controller
 
     public function showSelectFields(){
         $output = "";
+        $limit = 25;
         if(request()->get('open') == 1)
         {
             $output .= "<table><thead id='thead'><tr><td>Min. Age</td><td>Max. Age</td><td></td><td>Price</td><td></td></tr></thead><div id='message'></div>";
@@ -142,12 +143,14 @@ class ServiceController extends Controller
             $output .= "</select></td>";
             $output .= "<td><select name='max[2]' class = 'form-control' data-id='3' id='max_2' onclick='ch(this)' required>";
             $output .= "<option value = ''>Select</option>";
-            for($i = 1; $i <= 20; $i++){
+            for($i = 1; $i <= $limit; $i++){
                 $output .= "<option value='$i'>$i</option>";
             }
             $output .= "</select></td><td><input class='form-control' name='price[2]' required/></td><td>Tk</td><td><a id = 'add_field' onclick='addfield()' class = 'btn btn-success'>+</a></td></tr>";
             $output .= "<tbody id='select_field'></tbody></table>";
-            echo $output;
+            
+            return response()->json(['output' => $output, 'limit' => $limit]);
+
         }
         elseif(request()->get('open') == 0)
         {
