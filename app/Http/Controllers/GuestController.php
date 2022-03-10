@@ -122,7 +122,11 @@ class GuestController extends Controller
                 $output .= "<td><select name='max[$count]' class = 'form-control' data-id='$data_id_2' id='max_$count' onclick='ch(this)' required>";
                 $output .= "<option value = '$max[$key]'>$max[$key]</option>";
                 for ($i = 1; $i <= $limit; $i++) {
-                    $output .= "<option value='$i' >$i</option>";
+                    if($max[$key] != $i)
+                    {
+                        $output .= "<option value='$i'>$i</option>";
+                    }
+
                 }
 
                 $id = $count == 2 ? 'add_field': 'remove';
