@@ -122,7 +122,7 @@
             @csrf
             <label for="">Change For Children</label>
             <select name="select" class="form-control" name="" id="confirmation" value="{{old('select')}}">
-                <option value="">Select</option>
+                <option value="" selected>Select</option>
                 <option value="0" {{ old('select') == 0 ? 'selected' : '' }}>No</option>
 
                 <option value="1" {{ old('select') == 1 ? 'selected' : '' }}>Yes</option>
@@ -165,8 +165,22 @@
         var countAfterValidation = <?php echo json_encode(session('count')); ?>;
 
 
+        $('#confirmation').change( function(){
+            outputAfterValidation = null,
+            arrayAfterValidation = [],
+            // array clear
+            array.splice(0, array.length);
+            limitAfterValidation = null,
+            data_id_1AfterValidation = null,
+            data_id_2AfterValidation = null,
+            countAfterValidation = null;
 
-        
+            $('#table').empty();
+            $('#select_field').empty();
+
+            console.log(outputAfterValidation,  'y', arrayAfterValidation, limitAfterValidation, data_id_1AfterValidation, data_id_2AfterValidation, countAfterValidation);
+        });
+
         // var arr = JSON.parse(encoded);
         console.log(outputAfterValidation, arrayAfterValidation, limitAfterValidation, data_id_1AfterValidation, data_id_2AfterValidation, countAfterValidation);
 
@@ -218,6 +232,7 @@
         var any = 2;
         var any_1 = 3;
         var array = arrayAfterValidation ? arrayAfterValidation : [];
+        console.log(array, 'arrayAfterValidation change');
         var logic = 0;
         var count = countAfterValidation ? countAfterValidation : 2;
         var w = data_id_1AfterValidation ? data_id_1AfterValidation : 2;
@@ -263,7 +278,7 @@
             removed = 1;
             array.push(0);
             array.push(0);
-            console.log(array);
+            console.log(array, 'l');
             loop = '';
             var n = 20;
             var p = this.any;
