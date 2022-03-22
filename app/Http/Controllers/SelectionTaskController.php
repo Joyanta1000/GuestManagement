@@ -31,7 +31,7 @@ class SelectionTaskController extends Controller
             }
 
             return response(['data' => '<div class="col-md-6 mx-auto" style="padding-top: 20px;" ><label for="">Select From</label><select name="" id="select_from" class="form-control select_from"><option value="">Select</option>'.$option_1.'
-            </select></div><div class="col-md-6 mx-auto" style="padding-top: 20px;" ><label for="">Select From</label><select name="" id="select_to" class="form-control"><option value="">Select</option>'.$option_2.'</select></div>']);
+            </select></div><div class="col-md-6 mx-auto" style="padding-top: 20px;" ><label for="">Select To</label><select name="" id="select_to" class="form-control"><option value="">Select</option>'.$option_2.'</select></div>']);
         }
         return view('NewTask.index');
     }
