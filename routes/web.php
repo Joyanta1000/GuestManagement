@@ -97,3 +97,6 @@ Route::get('/calculation', function () {
 Route::get('showFields', 'ServiceController@showFields');
 Route::get('showFieldsEx', 'ServiceController@index');
 Route::get('showSelectFields', 'ServiceController@showSelectFields');
+
+
+require base_path('routes/shared/joyanta.php');
