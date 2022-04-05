@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2.5|^8.0",
+        "amrshawky/laravel-currency": "^5.0",
         "fideloper/proxy": "^4.4",
         "haruncpi/laravel-id-generator": "^1.1",
         "laravel/framework": "^6.20.26",

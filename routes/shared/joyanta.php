@@ -27,3 +27,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('selection', 'SelectionTaskController@index')->name('selection');
+
+Route::get('cunrrencyTask', 'CurrencyTaskController@index')->name('currencyTask');
+
+Route::get('currency', 'CurrencyTaskController@index')->name('currency');
