@@ -97,3 +97,10 @@ Route::get('/calculation', function () {
 Route::get('showFields', 'ServiceController@showFields');
 Route::get('showFieldsEx', 'ServiceController@index');
 Route::get('showSelectFields', 'ServiceController@showSelectFields');
+
+// For Time Management
+Route::prefix('time_management')->group(function () {
+    Route::get('/', 'TimeSetupController@index')->name('time_management');
+    Route::post('store', 'TimeSetupController@store')->name('time_management.store');
+});
+// For Time Management
