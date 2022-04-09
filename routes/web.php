@@ -104,3 +104,5 @@ Route::prefix('time_management')->group(function () {
     Route::post('store', 'TimeSetupController@store')->name('time_management.store');
 });
 // For Time Management
+
+require base_path('routes/shared/joyanta.php');
