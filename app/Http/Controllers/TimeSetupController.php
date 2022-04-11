@@ -51,7 +51,6 @@ class TimeSetupController extends Controller
         $datetime = Carbon::now()->parse($time_diff)->format("H:i");
 
         if ($current < $datetime) {
-
             dd('current time: ', $current, 'substracted time: ', $datetime, 'current time is less than substracted time');
         } else {
             dd('current time: ', $current, 'substracted time: ', $datetime, 'current time is greater than substracted time');
