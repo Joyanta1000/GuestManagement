@@ -14,50 +14,105 @@ class TimeSetupController extends Controller
 
     public function create()
     {
-        
-    }
-
-    public function store(Request $request)
-    {
+        $time = '12:30';
+        $meridiem = 'PM';
+        $to_back = '2';
+        $timing = 'hr';
         $timezone = 'Asia/Dhaka';
         date_default_timezone_set($timezone);
     
-        if(strpos($request->time,':') !== false)
+        if(strpos($time,':') !== false)
         {
-            $date_time_1 = strtotime($request->time);
+            $date_time_1 = strtotime($time);
         }
-        else if (strpos($request->time,':') == false)
+        else if (strpos($time,':') == false)
         {
-            $date_time_1 = strtotime($request->time.':00');
-        }
-
-        if(strpos($request->to_back,':') !== false && $request->timing == 'hr')
-        {
-            $date_time_2 = strtotime($request->to_back);
-        }
-        else if(strpos($request->to_back,':') == false && $request->timing == 'hr')
-        {
-        $date_time_2 = strtotime($request->to_back . ':00');
-        }
-        else if(strpos($request->to_back,':') == false && $request->timing == 'min')
-        {
-            $date_time_2 = strtotime('00:'.$request->to_back);
+            $date_time_1 = strtotime($time.':00');
         }
 
-        $time = $date_time_1 - $date_time_2;
+        if(strpos($to_back,':') !== false && $timing == 'hr')
+        {
+            $date_time_2 = strtotime($to_back);
+        }
+        else if(strpos($to_back,':') == false && $timing == 'hr')
+        {
+        $date_time_2 = strtotime($to_back . ':00');
+        }
+        else if(strpos($to_back,':') == false && $timing == 'min')
+        {
+            $date_time_2 = strtotime('00:'.$to_back);
+        }
 
-         if($request->meridiem == 'AM' || $request->meridiem == 'am')
+        $time_diff = $date_time_1 - $date_time_2;
+
+         if($meridiem == 'AM' || $meridiem == 'am')
          {
-            $time = $time;
+            $time_diff = $time_diff;
          }
-         else if($request->meridiem == 'PM' || $request->meridiem == 'pm')
+         else if($meridiem == 'PM' || $meridiem == 'pm')
          {
-            $time = $time - 12*60*60;
+            $time_diff = $time_diff - 12*60*60;
          }
      
         $current = Carbon::now()->format('H:i');
 
-        $datetime = Carbon::now()->parse($time)->format("H:i");
+        $datetime = Carbon::now()->parse($time_diff)->format("H:i");
+
+        if($current < $datetime){
+
+            dd($current , $datetime,'current time is less than substracted time');
+        }
+        else{
+            dd($current , $datetime, 'current time is greater than substracted time');
+        }
+    }
+
+    public function store(Request $request)
+    {
+
+        $time = '12:30';
+        $meridiem = 'PM';
+        $to_back = '2';
+        $timing = 'hr';
+        $timezone = 'Asia/Dhaka';
+        date_default_timezone_set($timezone);
+    
+        if(strpos($time,':') !== false)
+        {
+            $date_time_1 = strtotime($time);
+        }
+        else if (strpos($time,':') == false)
+        {
+            $date_time_1 = strtotime($time.':00');
+        }
+
+        if(strpos($to_back,':') !== false && $timing == 'hr')
+        {
+            $date_time_2 = strtotime($to_back);
+        }
+        else if(strpos($to_back,':') == false && $timing == 'hr')
+        {
+        $date_time_2 = strtotime($to_back . ':00');
+        }
+        else if(strpos($to_back,':') == false && $timing == 'min')
+        {
+            $date_time_2 = strtotime('00:'.$to_back);
+        }
+
+        $time_diff = $date_time_1 - $date_time_2;
+
+         if($meridiem == 'AM' || $meridiem == 'am')
+         {
+            $time_diff = $time_diff;
+         }
+         else if($meridiem == 'PM' || $meridiem == 'pm')
+         {
+            $time_diff = $time_diff - 12*60*60;
+         }
+     
+        $current = Carbon::now()->format('H:i');
+
+        $datetime = Carbon::now()->parse($time_diff)->format("H:i");
 
         if($current < $datetime){
 

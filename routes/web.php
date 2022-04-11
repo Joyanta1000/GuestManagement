@@ -102,6 +102,7 @@ Route::get('showSelectFields', 'ServiceController@showSelectFields');
 Route::prefix('time_management')->group(function () {
     Route::get('/', 'TimeSetupController@index')->name('time_management');
     Route::post('store', 'TimeSetupController@store')->name('time_management.store');
+    Route::get('to_time', 'TimeSetupController@create')->name('time_management.toTime');
 });
 // For Time Management
 
