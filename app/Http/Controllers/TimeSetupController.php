@@ -16,8 +16,8 @@ class TimeSetupController extends Controller
     {
         $time = '12:30';
         $to_back = '2';
-        $timing = 'hr';
-        $meridiem = 'AM';
+        $timing = 'hr'; // hr or min
+        $meridiem = 'PM'; // AM or PM
         $timezone = 'Asia/Dhaka';
 
         date_default_timezone_set($timezone);
