@@ -106,4 +106,7 @@ Route::prefix('time_management')->group(function () {
 });
 // For Time Management
 
+
+Route::get('trtrtrtrt', 'ServiceController@showSelectFields');
+
 require base_path('routes/shared/joyanta.php');
