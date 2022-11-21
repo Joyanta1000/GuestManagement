@@ -106,7 +106,11 @@ Route::prefix('time_management')->group(function () {
 });
 // For Time Management
 
-require base_path('routes/shared/joyanta.php');
-Auth::routes();
+// require base_path('routes/shared/joyanta.php');
+// Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('trtrtrtrt', 'ServiceController@showSelectFields');
+
+require base_path('routes/shared/joyanta.php');
